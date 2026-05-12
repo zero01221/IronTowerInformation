@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c ' *)",
+      "Read(//tmp/**)",
+      "Bash(python scripts/inspect_ccgp.py)",
+      "Bash(python scripts/test_ccgp_enc.py)",
+      "Bash(python scripts/bidding_scraper.py --dry-run)"
+    ]
+  }
+}
