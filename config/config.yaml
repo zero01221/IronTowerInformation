@@ -108,19 +108,9 @@ rss:
   # - 正整数：覆盖全局设置，只推送此天数内的文章
   # - 0：禁用此频道的新鲜度过滤，推送所有文章
   feeds:
-    - id: "ccgp"
-      name: "中国政府采购网"
-      url: "http://www.ccgp.gov.cn/rss/notice.xml"
-      max_age_days: 2
-
-    - id: "chinabidding"
-      name: "中国招标投标公共服务平台"
-      url: "https://www.chinabidding.com.cn/rss.xml"
-      max_age_days: 2
-
-    - id: "ggzy-yunnan"
-      name: "云南省公共资源交易中心"
-      url: "https://www.ynggzy.com.cn/rss/notice.xml"
+    - id: "bidding-feed"
+      name: "云南铁塔招标聚合"
+      url: "file://output/bidding_feed.xml"
       max_age_days: 2
 
 # ===============================================================

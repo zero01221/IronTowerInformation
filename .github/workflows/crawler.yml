@@ -124,6 +124,10 @@ jobs:
         if: success()
         run: uv sync --frozen --no-dev
 
+      - name: Install scraper dependencies
+        if: success()
+        run: pip install requests beautifulsoup4
+
       - name: Verify required files
         if: success()
         run: |
@@ -131,6 +135,13 @@ jobs:
             echo "Error: Config missing"
             exit 1
           fi
+
+      - name: Run bidding scraper
+        if: success()
+        run: |
+          python scripts/bidding_scraper.py --output output/bidding_feed.xml --interval 15
+          echo "Scraper finished. Feed items:"
+          grep -c "<item>" output/bidding_feed.xml || echo "0 items"
 
       - name: Run crawler
         if: success()

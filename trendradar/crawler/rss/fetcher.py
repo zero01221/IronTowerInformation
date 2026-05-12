@@ -126,6 +126,15 @@ class RSSFetcher:
         filtered_count = len(items) - len(filtered)
         return filtered, filtered_count
 
+    def _read_local_feed(self, url: str) -> str:
+        """读取本地 file:// RSS 文件"""
+        import os
+        path = url[len("file://"):]
+        if not os.path.isabs(path):
+            path = os.path.join(os.getcwd(), path)
+        with open(path, "r", encoding="utf-8") as f:
+            return f.read()
+
     def fetch_feed(self, feed: RSSFeedConfig) -> Tuple[List[RSSItem], Optional[str]]:
         """
         抓取单个 RSS 源
@@ -137,10 +146,19 @@ class RSSFetcher:
             (条目列表, 错误信息) 元组
         """
         try:
-            response = self.session.get(feed.url, timeout=self.timeout)
-            response.raise_for_status()
-
-            parsed_items = self.parser.parse(response.text, feed.url)
+            # 支持本地文件（由 bidding_scraper.py 生成的 feed）
+            if feed.url.startswith("file://"):
+                try:
+                    content = self._read_local_feed(feed.url)
+                except FileNotFoundError:
+                    error = f"本地 feed 文件不存在: {feed.url}，请先运行 scripts/bidding_scraper.py"
+                    print(f"[RSS] {feed.name}: {error}")
+                    return [], error
+                parsed_items = self.parser.parse(content, feed.url)
+            else:
+                response = self.session.get(feed.url, timeout=self.timeout)
+                response.raise_for_status()
+                parsed_items = self.parser.parse(response.text, feed.url)
 
             # 限制条目数量（0=不限制）
             if feed.max_items > 0:
