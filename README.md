@@ -11,6 +11,16 @@
 
 ---
 
+## 🙏 致谢
+
+本项目基于 [TrendRadar](https://github.com/sansan0/TrendRadar) 项目进行二次开发和定制，特别感谢原作者 [@sansan0](https://github.com/sansan0) 的开源精神和杰出工作。
+
+TrendRadar 是一个功能强大的 AI 驱动的舆情与热点监控工具，为本项目的实现提供了坚实的基础。
+
+🔗 原项目地址：[https://github.com/sansan0/TrendRadar](https://github.com/sansan0/TrendRadar)
+
+---
+
 ## 🎯 核心功能
 
 | 功能             | 说明                                       |
