@@ -30,7 +30,10 @@
 │   ├── frequency_words.txt # 关键词列表
 │   ├── timeline.yaml     # 时间线配置
 │   └── ai_filter/        # AI 过滤配置
-├── scripts/              # 脚本（bidding_scraper.py 招标抓取）
+├── scripts/              # 脚本
+│   ├── bidding_scraper.py  # 招标抓取
+│   ├── coze-deploy-setup.sh # 部署依赖安装
+│   └── coze-deploy-run.sh   # 部署服务启动（端口 5000）
 ├── output/               # 输出目录
 ├── docker/               # Docker 配置
 ├── index.html            # 报告模板（静态 HTML）
@@ -52,6 +55,14 @@
 - 本项目为后端/CLI 工具，无可预览的 Web 界面
 - 运行方式：`uv run python -m trendradar`
 - MCP 服务：`uv run python -m mcp_server.server --transport http --host 0.0.0.0 --port 3333`
+
+## 部署配置
+
+- 部署类型：service（HTTP 服务）
+- 部署入口：MCP HTTP 服务
+- 部署端口：5000
+- 构建脚本：`scripts/coze-deploy-setup.sh`（安装依赖）
+- 运行脚本：`scripts/coze-deploy-run.sh -p 5000`（启动 MCP HTTP 服务）
 
 ## 用户偏好与长期约束
 
