@@ -1,0 +1,11 @@
+[project]
+sub_id = "152a8b69"
+name = "IronTowerInformation"
+requires = ["python-3.12"]
+project_type = ""
+
+[preview]
+preview_enable = "disabled"
+
+[subprojects]
+path = ["."]
