@@ -1,11 +1,18 @@
 # coding=utf-8
 """
 招标信息爬虫 - 生成 RSS feed
-爬取四个招标网站，过滤云南铁塔相关招标公告，输出标准 RSS XML
+爬取多个招标网站，过滤云南铁塔相关招标公告，输出标准 RSS XML
+
+修复说明：
+1. should_include() 现在正确使用关键词过滤（核心词 + 地区+行业组合）
+2. 中国政府采购网改用搜索 API，按关键词精准检索
+3. 中国采购与招标网修正 CSS 选择器（ul.as-pager-body）
+4. 移除已失效的中国招标投标公共服务平台（API 返回 HTML 而非 JSON）
+5. 云南省公共资源交易中心 API 结果现在会经过关键词过滤
 
 用法：
     python scripts/bidding_scraper.py
-    python scripts/bidding_scraper.py --output output/feed.xml
+    python scripts/bidding_scraper.py --output output/bidding_feed.xml
     python scripts/bidding_scraper.py --dry-run   # 只打印结果，不写文件
 """
 
@@ -34,39 +41,51 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
 from bs4 import BeautifulSoup
 
 # ─────────────────────────────────────────────────────────────
-# 过滤关键词配置
+# 过滤关键词配置（分组）
 # ─────────────────────────────────────────────────────────────
 
-# 必须包含其中至少一个词才保留（招标类型过滤）
-INCLUDE_KEYWORDS = [
-    # 铁塔相关
+# 核心关键词 —— 标题必须包含其中至少一个，或者满足「地区 + 行业」组合
+CORE_KEYWORDS = [
+    # 铁塔直接相关
     "铁塔", "钢管塔", "角钢塔", "格构式铁塔",
     "通信铁塔", "输电铁塔", "电力铁塔", "广播电视塔",
     "塔材", "塔架", "塔身", "塔基",
     "铁塔制造", "铁塔加工", "铁塔生产", "铁塔安装",
     "铁塔工程", "铁塔项目", "铁塔供货",
-    # 地域相关
+    "中国铁塔", "铁塔公司",
+    "5G铁塔", "基站铁塔",
+    "线路铁塔",
+]
+
+# 地区关键词
+REGION_KEYWORDS = [
     "云南", "昆明", "大理", "丽江", "西双版纳", "曲靖",
     "玉溪", "保山", "昭通", "楚雄", "红河", "文山",
     "普洱", "临沧", "德宏", "怒江", "迪庆",
     "滇中", "滇西", "滇东", "滇南", "滇北",
+]
+
+# 行业关键词（与地区关键词组合使用）
+INDUSTRY_KEYWORDS = [
     # 电力工程
     "输电线路", "输变电", "变电站", "换流站",
     "电力工程", "电网工程", "电力建设",
     "国家电网", "南方电网", "云南电网", "云南电力",
     "特高压", "超高压", "高压线路",
-    "电力铁塔", "输电铁塔", "线路铁塔",
+    "电力铁塔",
     # 通信基础设施
-    "通信铁塔", "5G铁塔", "基站铁塔",
-    "中国铁塔", "铁塔公司",
     "通信工程", "基站建设", "5G建设",
+    "通信设备采购",
     # 钢结构
     "钢结构", "钢构件", "热镀锌", "防腐处理",
     "角钢", "钢管", "型钢",
+    "钢结构工程", "钢结构制作", "钢结构安装",
 ]
 
+# 保留兼容：合并所有白名单词（供外部引用）
+INCLUDE_KEYWORDS = CORE_KEYWORDS + REGION_KEYWORDS + INDUSTRY_KEYWORDS
+
 # 包含以下词则排除（中标公告、非招标内容）
-# 关键词白名单过滤由 TrendRadar 的 frequency_words.txt 负责，此处只做黑名单排除
 EXCLUDE_KEYWORDS = [
     "中标公告", "中标结果", "成交公告", "成交结果",
     "中标候选人公示", "中标候选人",
@@ -146,60 +165,21 @@ class SiteConfig:
 
 SITES: List[SiteConfig] = [
     SiteConfig(
-        # HTML: <ul class="c_list_bid"><li><a href="./zbgg/...">标题</a></li>
-        # 日期从 URL 中提取（t20260512_ 格式），li 内无 span 日期
-        name="中国政府采购网",
-        url="http://www.ccgp.gov.cn/cggg/dfgg/",
-        base_url="http://www.ccgp.gov.cn",
-        list_selectors=["ul.c_list_bid"],
-        item_selectors=["li"],
-        title_selectors=["a"],
-        link_selectors=["a"],
-        date_selectors=["span.c_list_bid_date", "span"],
-        encoding="utf-8",
-    ),
-    SiteConfig(
-        # HTML: <span class="bullentinName">标题</span>
-        #       <span class="bullentinDate">2026-05-12</span>
-        name="中国招标投标公共服务平台",
-        url="http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getSearch.do",
-        base_url="http://www.cebpubservice.com",
-        list_selectors=["div.bulletin-list", "table", "tbody", "div.list", "ul"],
-        item_selectors=["tr", "li", "div.item"],
-        title_selectors=["span.bullentinName", "td:nth-child(2)", "a"],
-        link_selectors=["a"],
-        date_selectors=["span.bullentinDate", "td.bullentinDate", "td:last-child"],
-        encoding="utf-8",
-    ),
-    SiteConfig(
-        # Vue 渲染页面，尝试直接访问其后端 API
-        # 若仍失败，可替换为其他云南招标信息源
-        name="云南省公共资源交易中心",
-        url="https://ggzy.yn.gov.cn/tradeHall/tradeList?tradeType=1&pageNum=1&pageSize=20",
-        base_url="https://ggzy.yn.gov.cn",
-        list_selectors=["div.list-wrap", "ul", "div.trade-list", "div.content", "tbody"],
-        item_selectors=["li", "div.item", "div.list-item", "tr"],
-        title_selectors=["h5 span", "span[data-v-e04feef4]", "a", "span.title", "td:nth-child(2)"],
-        link_selectors=["a"],
-        date_selectors=["span.date", "td:last-child"],
-        encoding="utf-8",
-    ),
-    SiteConfig(
         # chinabidding.com 搜索结果页：POST /search/proj.htm?fullText=铁塔
-        # HTML: <li><a class="as-pager-item" href="/bidDetail/xxx">
-        #         <h5><span class="txt" title="完整标题">...</span>
+        # HTML: <ul class="as-pager-body"><li><a class="as-pager-item" href="/bidDetail/xxx">
+        #         <h5 class="as-p-tit"><span class="txt" title="完整标题">...</span>
         #             <span class="time">发布时间：2026-05-11</span></h5>
-        #       </a></li>
+        #       </a></li></ul>
         name="中国采购与招标网",
         url="https://www.chinabidding.com/search/proj.htm",
         base_url="https://www.chinabidding.com",
-        list_selectors=["ul.as-pager-list", "ul"],
+        list_selectors=["ul.as-pager-body"],
         item_selectors=["li"],
-        title_selectors=["h5 span.txt", "h5"],
-        link_selectors=["a.as-pager-item", "a"],
+        title_selectors=["h5 span.txt", "h5.as-p-tit"],
+        link_selectors=["a.as-pager-item"],
         date_selectors=["span.time"],
         encoding="utf-8",
-        extra_params={"post_data": {"fullText": "铁塔 云南", "poClass": "BidNotice"}},
+        extra_params={"post_data": {"fullText": "铁塔", "poClass": "BidNotice"}},
     ),
 ]
 
@@ -209,7 +189,8 @@ SITES: List[SiteConfig] = [
 # ─────────────────────────────────────────────────────────────
 
 def fetch_page(url: str, referer: str = "", timeout: int = 20, encoding: str = "utf-8",
-               post_data: Optional[Dict] = None) -> Optional[BeautifulSoup]:
+               post_data: Optional[Dict] = None,
+               params: Optional[Dict] = None) -> Optional[BeautifulSoup]:
     """抓取页面，返回 BeautifulSoup 对象，失败返回 None。post_data 非空时使用 POST。"""
     try:
         if post_data:
@@ -224,6 +205,7 @@ def fetch_page(url: str, referer: str = "", timeout: int = 20, encoding: str = "
         else:
             resp = requests.get(
                 url,
+                params=params,
                 headers=make_headers(referer),
                 timeout=timeout,
                 allow_redirects=True,
@@ -283,10 +265,32 @@ def contains_keyword(text: str, keywords: List[str]) -> bool:
 
 
 def should_include(title: str) -> bool:
-    """判断标题是否应该保留，只做黑名单排除，不做白名单过滤"""
+    """
+    判断标题是否应该保留。
+    过滤逻辑：
+      1. 标题必须非空且长度 >= 5
+      2. 必须匹配至少一个核心关键词（铁塔相关），
+         或者同时匹配至少一个地区关键词 + 至少一个行业关键词
+      3. 不能匹配任何排除关键词
+    """
     if not title or len(title) < 5:
         return False
-    return not contains_keyword(title, EXCLUDE_KEYWORDS)
+
+    # 黑名单排除
+    if contains_keyword(title, EXCLUDE_KEYWORDS):
+        return False
+
+    # 白名单过滤：核心词直接通过
+    if contains_keyword(title, CORE_KEYWORDS):
+        return True
+
+    # 地区 + 行业组合通过
+    has_region = contains_keyword(title, REGION_KEYWORDS)
+    has_industry = contains_keyword(title, INDUSTRY_KEYWORDS)
+    if has_region and has_industry:
+        return True
+
+    return False
 
 
 def extract_text(element) -> str:
@@ -295,7 +299,7 @@ def extract_text(element) -> str:
         return ""
     text = re.sub(r"\s+", " ", element.get_text()).strip()
     # 去除 GBK 解码失败产生的替换字符
-    return text.replace("�", "")
+    return text.replace("", "")
 
 
 # ─────────────────────────────────────────────────────────────
@@ -347,6 +351,9 @@ def parse_site(site: SiteConfig) -> List[BiddingItem]:
             if not title:
                 continue
 
+            # 清理标题中的标签前缀（如 [招标公告]）
+            title = re.sub(r"^\[.*?\]", "", title).strip()
+
             # 过滤
             if not should_include(title):
                 continue
@@ -359,6 +366,11 @@ def parse_site(site: SiteConfig) -> List[BiddingItem]:
             if not href:
                 # 尝试从标题元素本身取链接
                 href = title_els[0].get("href", "") if title_els[0].name == "a" else ""
+            if not href:
+                # 尝试从 li 的父 a 元素取链接（chinabidding 结构）
+                parent_a = raw.find_parent("a") or raw.find("a")
+                if parent_a:
+                    href = parent_a.get("href", "")
             url = normalize_url(href, site.base_url) if href else site.url
 
             # 提取日期：先找 span，找不到则从 URL 中提取（如 t20260512_ 格式）
@@ -368,6 +380,8 @@ def parse_site(site: SiteConfig) -> List[BiddingItem]:
                 # 从 href 中提取 YYYYMMDD
                 m = re.search(r"(\d{4})(\d{2})(\d{2})", href)
                 date_raw = f"{m.group(1)}-{m.group(2)}-{m.group(3)}" if m else ""
+            # 清理日期文本中的前缀（如 "发布时间："）
+            date_raw = re.sub(r"^[^0-9]*", "", date_raw)
             pub_date = parse_date(date_raw)
 
             items.append(BiddingItem(
@@ -376,11 +390,135 @@ def parse_site(site: SiteConfig) -> List[BiddingItem]:
                 pub_date=pub_date,
                 pub_date_raw=date_raw or "未知日期",
                 source=site.name,
-                description=f"来源：{site.name}　发布时间：{date_raw or '未知'}",
+                description=f"来源：{site.name} 发布时间：{date_raw or '未知'}",
             ))
 
     print(f"  过滤后保留 {len(items)} 条招标信息")
     return items
+
+
+# ─────────────────────────────────────────────────────────────
+# 中国政府采购网 搜索 API 专用爬取
+# ─────────────────────────────────────────────────────────────
+
+CCGP_SEARCH_URL = "http://search.ccgp.gov.cn/bxsearch"
+
+
+def fetch_ccgp_search(keyword: str, start_time: str = "", end_time: str = "",
+                      page_index: int = 1) -> List[BiddingItem]:
+    """
+    通过中国政府采购网搜索 API 获取招标公告。
+    搜索地址: http://search.ccgp.gov.cn/bxsearch
+    """
+    from datetime import datetime as dt
+    if not end_time:
+        end_time = dt.now().strftime("%Y:%m:%d")
+    if not start_time:
+        start_time = (dt.now() - timedelta(days=7)).strftime("%Y:%m:%d")
+
+    params = {
+        "searchtype": 1,
+        "page_index": page_index,
+        "bidSort": 0,
+        "buyerName": "",
+        "projectId": "",
+        "pinMu": 0,
+        "bidType": 1,  # 1=招标公告
+        "dbselect": "bidx",
+        "kw": keyword,
+        "start_time": start_time,
+        "end_time": end_time,
+        "timeType": 2,
+        "displayZone": "",
+        "zoneId": "",
+        "pppStatus": 0,
+        "agentName": "",
+    }
+
+    print(f"\n[中国政府采购网] 搜索关键词: {keyword}")
+    soup = fetch_page(CCGP_SEARCH_URL, params=params,
+                      referer="http://www.ccgp.gov.cn/")
+    if not soup:
+        return []
+
+    items = []
+
+    # 搜索结果列表
+    result_items = soup.select("ul.vT-srch-result-list-bid li")
+    if not result_items:
+        result_items = soup.select("ul.vT-srch-result-list li")
+
+    print(f"  找到 {len(result_items)} 个搜索结果")
+
+    for li in result_items:
+        a_tag = li.find("a")
+        if not a_tag:
+            continue
+
+        title = a_tag.get_text(strip=True)
+        if not title:
+            continue
+
+        # 清理标题
+        title = re.sub(r"^\[.*?\]", "", title).strip()
+
+        # 过滤
+        if not should_include(title):
+            continue
+
+        href = a_tag.get("href", "")
+        url = normalize_url(href, "http://www.ccgp.gov.cn")
+
+        # 提取日期
+        date_span = li.select_one("span.date") or li.select_one("span")
+        date_raw = ""
+        if date_span:
+            date_raw = extract_text(date_span)
+            # 提取日期部分
+            m = re.search(r"(\d{4})[.\-/年](\d{1,2})[.\-/月](\d{1,2})", date_raw)
+            if m:
+                date_raw = f"{m.group(1)}-{m.group(2).zfill(2)}-{m.group(3).zfill(2)}"
+            else:
+                date_raw = ""
+
+        pub_date = parse_date(date_raw)
+
+        items.append(BiddingItem(
+            title=title,
+            url=url,
+            pub_date=pub_date,
+            pub_date_raw=date_raw or "未知日期",
+            source="中国政府采购网",
+            description=f"来源：中国政府采购网 发布时间：{date_raw or '未知'}",
+        ))
+
+    print(f"  过滤后保留 {len(items)} 条招标信息")
+    return items
+
+
+def fetch_ccgp() -> List[BiddingItem]:
+    """爬取中国政府采购网，使用多个关键词搜索"""
+    all_items: List[BiddingItem] = []
+    keywords = ["铁塔", "输电线路 云南", "电力工程 铁塔"]
+
+    for i, kw in enumerate(keywords):
+        if i > 0:
+            time.sleep(random.randint(3, 6))
+        try:
+            items = fetch_ccgp_search(kw)
+            all_items.extend(items)
+        except Exception as e:
+            print(f"  [错误] 中国政府采购网搜索 '{kw}' 失败: {e}")
+
+    # 去重（按 URL）
+    seen_urls = set()
+    unique_items = []
+    for item in all_items:
+        if item.url not in seen_urls:
+            seen_urls.add(item.url)
+            unique_items.append(item)
+
+    return unique_items
 
 
 # ─────────────────────────────────────────────────────────────
@@ -393,7 +531,7 @@ RSS_TEMPLATE = """\
   <channel>
     <title>云南铁塔制造招标信息</title>
     <link>https://github.com</link>
-    <description>聚合云南地区铁塔制造相关招标公告，来源：中国政府采购网、中国招标投标公共服务平台、云南省公共资源交易中心、中国采购与招标网</description>
+    <description>聚合云南地区铁塔制造相关招标公告，来源：中国政府采购网、云南省公共资源交易中心、中国采购与招标网</description>
     <language>zh-cn</language>
     <lastBuildDate>{build_date}</lastBuildDate>
     <ttl>1440</ttl>
@@ -490,7 +628,11 @@ def fetch_ynggzy_api(trade_type: str, page: int = 1, page_size: int = 20) -> Lis
 
         for row in rows:
             title = row.get("bulletinname", "").strip()
-            if not title or should_include(title) is False:
+            if not title:
+                continue
+
+            # 关键词过滤（核心逻辑修复点）
+            if not should_include(title):
                 continue
 
             guid = row.get("guid", "")
@@ -501,7 +643,7 @@ def fetch_ynggzy_api(trade_type: str, page: int = 1, page_size: int = 20) -> Lis
             pub_date = parse_date(date_raw)
 
             area = row.get("jyptid", "") or row.get("areaName", "")
-            desc = f"来源：云南省公共资源交易中心　地区：{area}　发布时间：{date_raw}"
+            desc = f"来源：云南省公共资源交易中心 地区：{area} 发布时间：{date_raw}"
 
             items.append(BiddingItem(
                 title=title,
@@ -544,11 +686,15 @@ def main():
 
     all_items: List[BiddingItem] = []
 
-    # 爬取普通 HTML 网站
+    # 1. 爬取中国政府采购网（搜索 API）
+    try:
+        ccgp_items = fetch_ccgp()
+        all_items.extend(ccgp_items)
+    except Exception as e:
+        print(f"[错误] 中国政府采购网爬取异常: {e}")
+
+    # 2. 爬取普通 HTML 网站（chinabidding 等）
     for i, site in enumerate(SITES):
-        # 跳过云南省公共资源交易中心（用专用 API 替代）
-        if "云南省公共资源交易中心" in site.name:
-            continue
         if i > 0:
             wait = args.interval + random.randint(0, 10)
             print(f"\n等待 {wait} 秒后继续...")
@@ -559,7 +705,7 @@ def main():
         except Exception as e:
             print(f"  [错误] {site.name} 爬取异常: {e}")
 
-    # 爬取云南省公共资源交易中心（专用 API）
+    # 3. 爬取云南省公共资源交易中心（专用 API）
     wait = args.interval + random.randint(0, 10)
     print(f"\n等待 {wait} 秒后继续...")
     time.sleep(wait)
@@ -568,6 +714,15 @@ def main():
         all_items.extend(yn_items)
     except Exception as e:
         print(f"  [错误] 云南省公共资源交易中心爬取异常: {e}")
+
+    # 全局去重（按 URL）
+    seen_urls = set()
+    unique_items = []
+    for item in all_items:
+        if item.url not in seen_urls:
+            seen_urls.add(item.url)
+            unique_items.append(item)
+    all_items = unique_items
 
     print(f"\n{'='*50}")
     print(f"共收集到 {len(all_items)} 条招标信息")
