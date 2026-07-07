@@ -749,7 +749,7 @@ def main():
             print(f"标题: {item.title}")
             print(f"来源: {item.source}")
             print(f"日期: {item.pub_date_raw}")
-            print(f"链接: {item.link}")
+            print(f"链接: {item.url}")
             if item.description:
                 print(f"摘要: {item.description[:200]}")
         return
