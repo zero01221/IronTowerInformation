@@ -264,14 +264,14 @@ def contains_keyword(text: str, keywords: List[str]) -> bool:
     return any(kw in text for kw in keywords)
 
 
-def should_include(title: str) -> bool:
+def should_include(title: str, require_yunnan: bool = True) -> bool:
     """
     判断标题是否应该保留。
     过滤逻辑：
       1. 标题必须非空且长度 >= 5
-      2. 必须匹配至少一个核心关键词（铁塔相关），
-         或者同时匹配至少一个地区关键词 + 至少一个行业关键词
-      3. 不能匹配任何排除关键词
+      2. 必须匹配至少一个核心关键词（铁塔相关）
+      3. 如果 require_yunnan=True，标题必须包含云南地区关键词
+      4. 不能匹配任何排除关键词
     """
     if not title or len(title) < 5:
         return False
@@ -280,17 +280,20 @@ def should_include(title: str) -> bool:
     if contains_keyword(title, EXCLUDE_KEYWORDS):
         return False
 
-    # 白名单过滤：核心词直接通过
-    if contains_keyword(title, CORE_KEYWORDS):
-        return True
+    # 必须有核心关键词（铁塔相关）
+    if not contains_keyword(title, CORE_KEYWORDS):
+        # 如果没有核心关键词，检查地区+行业组合
+        has_region = contains_keyword(title, REGION_KEYWORDS)
+        has_industry = contains_keyword(title, INDUSTRY_KEYWORDS)
+        if not (has_region and has_industry):
+            return False
 
-    # 地区 + 行业组合通过
-    has_region = contains_keyword(title, REGION_KEYWORDS)
-    has_industry = contains_keyword(title, INDUSTRY_KEYWORDS)
-    if has_region and has_industry:
-        return True
+    # 地区过滤：必须包含云南相关关键词
+    if require_yunnan:
+        if not contains_keyword(title, REGION_KEYWORDS):
+            return False
 
-    return False
+    return True
 
 
 def extract_text(element) -> str:
@@ -499,7 +502,13 @@ def fetch_ccgp_search(keyword: str, start_time: str = "", end_time: str = "",
 def fetch_ccgp() -> List[BiddingItem]:
     """爬取中国政府采购网，使用多个关键词搜索"""
     all_items: List[BiddingItem] = []
-    keywords = ["铁塔", "输电线路 云南", "电力工程 铁塔"]
+    # 搜索关键词：铁塔相关（后续通过 should_include 过滤云南地区）
+    keywords = [
+        "铁塔",
+        "中国铁塔",
+        "通信铁塔",
+        "基站铁塔",
+    ]
 
     for i, kw in enumerate(keywords):
         if i > 0:
@@ -734,9 +743,21 @@ def main():
     # 按日期排序（最新在前）
     all_items.sort(key=lambda x: x.pub_date, reverse=True)
 
-    # 打印摘要
+    # 按日期分组
+    from collections import defaultdict
+    items_by_date = defaultdict(list)
     for item in all_items:
-        print(f"  [{item.source}] {item.pub_date_raw} | {item.title[:60]}")
+        items_by_date[item.pub_date_raw].append(item)
+
+    # 打印摘要（按日期分组）
+    print(f"\n{'='*50}")
+    print(f"共收集到 {len(all_items)} 条招标信息")
+    print(f"{'='*50}")
+    
+    for date, items in sorted(items_by_date.items(), reverse=True):
+        print(f"\n【{date}】共 {len(items)} 条")
+        for item in items:
+            print(f"  [{item.source}] {item.title[:60]}")
 
     rss_content = build_rss(all_items)
 
@@ -744,14 +765,19 @@ def main():
         print(f"\n{'='*50}")
         print("详细信息：")
         print(f"{'='*50}")
-        for i, item in enumerate(all_items, 1):
-            print(f"\n--- [{i}] ---")
-            print(f"标题: {item.title}")
-            print(f"来源: {item.source}")
-            print(f"日期: {item.pub_date_raw}")
-            print(f"链接: {item.url}")
-            if item.description:
-                print(f"摘要: {item.description[:200]}")
+        item_num = 0
+        for date, items in sorted(items_by_date.items(), reverse=True):
+            print(f"\n{'─'*50}")
+            print(f"【{date}】")
+            print(f"{'─'*50}")
+            for item in items:
+                item_num += 1
+                print(f"\n--- [{item_num}] ---")
+                print(f"标题: {item.title}")
+                print(f"来源: {item.source}")
+                print(f"链接: {item.url}")
+                if item.description:
+                    print(f"摘要: {item.description[:300]}")
         return
 
     output_path = Path(args.output)
