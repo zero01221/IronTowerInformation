@@ -44,17 +44,19 @@ from bs4 import BeautifulSoup
 # 过滤关键词配置（分组）
 # ─────────────────────────────────────────────────────────────
 
-# 核心关键词 —— 标题必须包含其中至少一个，或者满足「地区 + 行业」组合
+# 核心关键词 —— 标题或描述必须包含其中至少一个，或者满足「地区 + 行业」组合
 CORE_KEYWORDS = [
     # 铁塔直接相关
     "铁塔", "钢管塔", "角钢塔", "格构式铁塔",
     "通信铁塔", "输电铁塔", "电力铁塔", "广播电视塔",
-    "塔材", "塔架", "塔身", "塔基",
+    "塔材", "塔架", "塔身", "塔基", "塔桅",
     "铁塔制造", "铁塔加工", "铁塔生产", "铁塔安装",
     "铁塔工程", "铁塔项目", "铁塔供货",
     "中国铁塔", "铁塔公司",
     "5G铁塔", "基站铁塔",
     "线路铁塔",
+    # 塔桅相关（广播电视塔、通信塔等）
+    "塔桅", "桅杆", "发射塔", "转播塔",
 ]
 
 # 地区关键词
@@ -158,6 +160,7 @@ class SiteConfig:
     title_selectors: List[str]      # 标题选择器（在条目内）
     link_selectors: List[str]       # 链接选择器（在条目内，取 href）
     date_selectors: List[str]       # 日期选择器（在条目内）
+    desc_selectors: List[str] = field(default_factory=list)  # 描述选择器（在条目内）
     base_url: str = ""              # 相对链接补全用
     encoding: str = "utf-8"
     extra_params: Dict = field(default_factory=dict)
@@ -178,8 +181,9 @@ SITES: List[SiteConfig] = [
         title_selectors=["h5 span.txt", "h5.as-p-tit"],
         link_selectors=["a.as-pager-item"],
         date_selectors=["span.time"],
+        desc_selectors=["p.as-p-desc", "div.as-p-desc", "span.as-p-desc", "p"],  # 描述选择器
         encoding="utf-8",
-        extra_params={"post_data": {"fullText": "铁塔", "poClass": "BidNotice"}},
+        extra_params={"post_data": {"fullText": "铁塔", "poClass": "BidNotice"}},  # 只搜索铁塔，后续过滤云南
     ),
 ]
 
@@ -264,33 +268,41 @@ def contains_keyword(text: str, keywords: List[str]) -> bool:
     return any(kw in text for kw in keywords)
 
 
-def should_include(title: str, require_yunnan: bool = True) -> bool:
+def should_include(title: str, description: str = "", require_yunnan: bool = True) -> bool:
     """
     判断标题是否应该保留。
     过滤逻辑：
       1. 标题必须非空且长度 >= 5
-      2. 必须匹配至少一个核心关键词（铁塔相关）
-      3. 如果 require_yunnan=True，标题必须包含云南地区关键词
+      2. 标题或描述必须匹配至少一个核心关键词（铁塔相关）
+      3. 如果 require_yunnan=True，标题或描述必须包含云南地区关键词
       4. 不能匹配任何排除关键词
+    
+    参数：
+      title: 标题文本
+      description: 描述/详情文本（可选，用于检查地区信息）
+      require_yunnan: 是否强制要求云南地区
     """
     if not title or len(title) < 5:
         return False
 
-    # 黑名单排除
+    # 合并标题和描述用于检查
+    full_text = title + " " + description
+
+    # 黑名单排除（只检查标题）
     if contains_keyword(title, EXCLUDE_KEYWORDS):
         return False
 
-    # 必须有核心关键词（铁塔相关）
-    if not contains_keyword(title, CORE_KEYWORDS):
+    # 必须有核心关键词（铁塔相关）- 检查标题和描述
+    if not contains_keyword(full_text, CORE_KEYWORDS):
         # 如果没有核心关键词，检查地区+行业组合
-        has_region = contains_keyword(title, REGION_KEYWORDS)
-        has_industry = contains_keyword(title, INDUSTRY_KEYWORDS)
+        has_region = contains_keyword(full_text, REGION_KEYWORDS)
+        has_industry = contains_keyword(full_text, INDUSTRY_KEYWORDS)
         if not (has_region and has_industry):
             return False
 
-    # 地区过滤：必须包含云南相关关键词
+    # 地区过滤：必须包含云南相关关键词 - 检查标题和描述
     if require_yunnan:
-        if not contains_keyword(title, REGION_KEYWORDS):
+        if not contains_keyword(full_text, REGION_KEYWORDS):
             return False
 
     return True
@@ -357,8 +369,12 @@ def parse_site(site: SiteConfig) -> List[BiddingItem]:
             # 清理标题中的标签前缀（如 [招标公告]）
             title = re.sub(r"^\[.*?\]", "", title).strip()
 
-            # 过滤
-            if not should_include(title):
+            # 提取描述/摘要（用于地区检查）
+            desc_els = try_selectors(raw, site.desc_selectors) if hasattr(site, 'desc_selectors') else []
+            desc = extract_text(desc_els[0]) if desc_els else ""
+            
+            # 过滤（同时检查标题和描述）
+            if not should_include(title, desc):
                 continue
 
             # 提取链接
@@ -387,13 +403,19 @@ def parse_site(site: SiteConfig) -> List[BiddingItem]:
             date_raw = re.sub(r"^[^0-9]*", "", date_raw)
             pub_date = parse_date(date_raw)
 
+            # 构建描述
+            if not desc:
+                desc = f"来源：{site.name} 发布时间：{date_raw or '未知'}"
+            else:
+                desc = f"来源：{site.name} {desc}"
+
             items.append(BiddingItem(
                 title=title,
                 url=url,
                 pub_date=pub_date,
                 pub_date_raw=date_raw or "未知日期",
                 source=site.name,
-                description=f"来源：{site.name} 发布时间：{date_raw or '未知'}",
+                description=desc,
             ))
 
     print(f"  过滤后保留 {len(items)} 条招标信息")
@@ -465,8 +487,12 @@ def fetch_ccgp_search(keyword: str, start_time: str = "", end_time: str = "",
         # 清理标题
         title = re.sub(r"^\[.*?\]", "", title).strip()
 
-        # 过滤
-        if not should_include(title):
+        # 提取描述/摘要（用于地区检查）
+        desc_tag = li.select_one("p") or li.select_one("span.desc") or li.select_one("div.desc")
+        desc = extract_text(desc_tag) if desc_tag else ""
+
+        # 过滤（同时检查标题和描述）
+        if not should_include(title, desc):
             continue
 
         href = a_tag.get("href", "")
@@ -486,13 +512,19 @@ def fetch_ccgp_search(keyword: str, start_time: str = "", end_time: str = "",
 
         pub_date = parse_date(date_raw)
 
+        # 构建描述
+        if not desc:
+            desc = f"来源：中国政府采购网 发布时间：{date_raw or '未知'}"
+        else:
+            desc = f"来源：中国政府采购网 {desc}"
+
         items.append(BiddingItem(
             title=title,
             url=url,
             pub_date=pub_date,
             pub_date_raw=date_raw or "未知日期",
             source="中国政府采购网",
-            description=f"来源：中国政府采购网 发布时间：{date_raw or '未知'}",
+            description=desc,
         ))
 
     print(f"  过滤后保留 {len(items)} 条招标信息")
@@ -507,7 +539,7 @@ def fetch_ccgp() -> List[BiddingItem]:
         "铁塔",
         "中国铁塔",
         "通信铁塔",
-        "基站铁塔",
+        "塔桅",
     ]
 
     for i, kw in enumerate(keywords):
@@ -640,8 +672,12 @@ def fetch_ynggzy_api(trade_type: str, page: int = 1, page_size: int = 20) -> Lis
             if not title:
                 continue
 
-            # 关键词过滤（核心逻辑修复点）
-            if not should_include(title):
+            # 提取地区信息作为描述（用于过滤）
+            area = row.get("jyptid", "") or row.get("areaName", "")
+            desc = f"地区：{area}"
+
+            # 关键词过滤（同时检查标题和描述）
+            if not should_include(title, desc):
                 continue
 
             guid = row.get("guid", "")
@@ -651,7 +687,7 @@ def fetch_ynggzy_api(trade_type: str, page: int = 1, page_size: int = 20) -> Lis
             date_raw = row.get("bulletinissuetime", "") or row.get("createTime", "")
             pub_date = parse_date(date_raw)
 
-            area = row.get("jyptid", "") or row.get("areaName", "")
+            # 构建完整描述
             desc = f"来源：云南省公共资源交易中心 地区：{area} 发布时间：{date_raw}"
 
             items.append(BiddingItem(
