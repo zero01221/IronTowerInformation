@@ -1362,35 +1362,35 @@ def main():
     except Exception as e:
         print(f"  [错误] 乙方宝爬取异常: {e}")
 
-    # 5. 爬取云南招标网（bidcenter）
-    wait = args.interval + random.randint(0, 10)
-    print(f"\n等待 {wait} 秒后继续...")
-    time.sleep(wait)
-    try:
-        bidcenter_items = fetch_yunnan_bidcenter()
-        all_items.extend(bidcenter_items)
-    except Exception as e:
-        print(f"  [错误] 云南招标网爬取异常: {e}")
+    # 5. 爬取云南招标网（bidcenter）- 需要人机验证，暂时禁用
+    # wait = args.interval + random.randint(0, 10)
+    # print(f"\n等待 {wait} 秒后继续...")
+    # time.sleep(wait)
+    # try:
+    #     bidcenter_items = fetch_yunnan_bidcenter()
+    #     all_items.extend(bidcenter_items)
+    # except Exception as e:
+    #     print(f"  [错误] 云南招标网爬取异常: {e}")
 
-    # 6. 爬取中国铁塔电子采购平台
-    wait = args.interval + random.randint(0, 10)
-    print(f"\n等待 {wait} 秒后继续...")
-    time.sleep(wait)
-    try:
-        tower_items = fetch_tower_ebid()
-        all_items.extend(tower_items)
-    except Exception as e:
-        print(f"  [错误] 中国铁塔电子采购平台爬取异常: {e}")
+    # 6. 爬取中国铁塔电子采购平台 - 需要登录，暂时禁用
+    # wait = args.interval + random.randint(0, 10)
+    # print(f"\n等待 {wait} 秒后继续...")
+    # time.sleep(wait)
+    # try:
+    #     tower_items = fetch_tower_ebid()
+    #     all_items.extend(tower_items)
+    # except Exception as e:
+    #     print(f"  [错误] 中国铁塔电子采购平台爬取异常: {e}")
 
-    # 7. 爬取中国电力招标采购网
-    wait = args.interval + random.randint(0, 10)
-    print(f"\n等待 {wait} 秒后继续...")
-    time.sleep(wait)
-    try:
-        dlztb_items = fetch_dlztb()
-        all_items.extend(dlztb_items)
-    except Exception as e:
-        print(f"  [错误] 中国电力招标采购网爬取异常: {e}")
+    # 7. 爬取中国电力招标采购网 - 搜索接口变化，暂时禁用
+    # wait = args.interval + random.randint(0, 10)
+    # print(f"\n等待 {wait} 秒后继续...")
+    # time.sleep(wait)
+    # try:
+    #     dlztb_items = fetch_dlztb()
+    #     all_items.extend(dlztb_items)
+    # except Exception as e:
+    #     print(f"  [错误] 中国电力招标采购网爬取异常: {e}")
 
     # 全局去重（按 URL）
     seen_urls = set()
