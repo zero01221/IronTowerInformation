@@ -94,7 +94,7 @@ sources:
     region_filter: none
   
   chinabidding:
-    # 暂时禁用 - 使用Cloudflare反爬虫保护(521错误)，需要selenium绕过
+    # 暂时禁用 - 网站返回502错误，可能检测到自动化访问
     enabled: false
     name: 中国采购与招标网
     search_url: https://www.chinabidding.com/search/proj.htm
