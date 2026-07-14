@@ -4,6 +4,7 @@
 import random
 import time
 from abc import ABC, abstractmethod
+from datetime import datetime, timedelta
 from typing import List, Optional
 
 from .config import Config
@@ -36,6 +37,9 @@ class BaseCrawler(ABC):
         app_config = Config.get_instance()
         self.timeout = app_config.get_int("request.timeout", 30)
         self.delay_between_requests = app_config.get_int("request.delay_between_requests", 5)
+        
+        # 日期过滤配置：只保留最近N天的信息（可在配置文件中修改）
+        self.days_limit = source_config.get("days_limit", app_config.get_int("filter.days_limit", 15))
     
     @abstractmethod
     def fetch(self) -> List[BidItem]:
@@ -71,6 +75,35 @@ class BaseCrawler(ABC):
     def filter_by_region(self, items: List[BidItem]) -> List[BidItem]:
         """按地区过滤"""
         return self.region_filter.filter_items(items)
+    
+    def filter_by_date(self, items: List[BidItem]) -> List[BidItem]:
+        """
+        按日期过滤，只保留最近N天的信息
+        
+        Args:
+            items: 招标信息列表
+            
+        Returns:
+            过滤后的招标信息列表
+        """
+        cutoff_date = datetime.now() - timedelta(days=self.days_limit)
+        filtered = []
+        
+        for item in items:
+            try:
+                # 解析日期（格式：YYYY-MM-DD）
+                item_date = datetime.strptime(item.date, "%Y-%m-%d")
+                if item_date >= cutoff_date:
+                    filtered.append(item)
+                else:
+                    logger.debug(f"[{self.display_name}] 过滤旧信息: {item.title[:30]}... ({item.date})")
+            except (ValueError, TypeError) as e:
+                # 日期解析失败，保留该条目
+                logger.warning(f"[{self.display_name}] 日期解析失败: {item.date}, 保留该条目")
+                filtered.append(item)
+        
+        logger.info(f"[{self.display_name}] 日期过滤: {len(items)} -> {len(filtered)} 条（最近{self.days_limit}天）")
+        return filtered
     
     def delay(self, min_seconds: float = None, max_seconds: float = None):
         """请求间延迟"""

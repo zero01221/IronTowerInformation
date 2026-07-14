@@ -19,6 +19,7 @@ from .logger import get_logger
 from .base_crawler import CrawlerManager
 from .crawlers import YfbzbCrawler, CcgpCrawler, YnggzyCrawler, ChinabiddingCrawler
 from .output import OutputFormatter
+from .notification import NotifierFactory
 
 logger = get_logger(__name__)
 
@@ -98,6 +99,18 @@ def main():
         # 保存新项目到数据库
         saved_count = db.save_items(new_items)
         logger.info(f"新增 {saved_count} 条招标信息")
+        
+        # 发送通知
+        notification_config = config.get("notification", {})
+        if notification_config:
+            notifier_factory = NotifierFactory(notification_config)
+            enabled_notifiers = notifier_factory.get_enabled_notifiers()
+            if enabled_notifiers:
+                logger.info(f"发送通知到: {', '.join(enabled_notifiers)}")
+                results = notifier_factory.send_all(new_items)
+                for notifier_name, success in results.items():
+                    status = "成功" if success else "失败"
+                    logger.info(f"  {notifier_name}: {status}")
     
     # 获取所有历史记录（用于RSS输出）
     all_history_items = db.get_all_items()

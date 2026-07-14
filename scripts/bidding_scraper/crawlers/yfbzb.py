@@ -2,6 +2,7 @@
 """乙方宝爬虫"""
 
 import re
+from datetime import datetime, timedelta
 from typing import List, Optional
 from urllib.parse import urlencode
 
@@ -25,6 +26,8 @@ class YfbzbCrawler(BaseCrawler):
         self.search_url = self.config.get("search_url", "https://www.yfbzb.com/search/invitedBidSearch")
         self.keywords = self.config.get("keywords", ["铁塔", "塔桅"])
         self.max_pages = self.config.get("max_pages", 2)
+        # 日期过滤：只保留最近N天的信息（可在配置文件中修改）
+        self.days_limit = self.config.get("days_limit", 15)
     
     def fetch(self) -> List[BidItem]:
         """抓取招标信息"""
@@ -46,6 +49,9 @@ class YfbzbCrawler(BaseCrawler):
         
         # 过滤云南地区
         filtered_items = self.filter_by_region(unique_items)
+        
+        # 日期过滤：只保留最近N天的信息
+        filtered_items = self.filter_by_date(filtered_items)
         
         return filtered_items
     
