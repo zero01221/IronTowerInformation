@@ -139,7 +139,7 @@ jobs:
       - name: Run bidding scraper
         if: success()
         run: |
-          python -m scripts/bidding_scraper/main.py --output output/bidding_feed.xml --interval 15
+          python -m scripts.bidding_scraper.main --output output/bidding_feed.xml --interval 15
           echo "Scraper finished. Feed items:"
           grep -c "<item>" output/bidding_feed.xml || echo "0 items"
 
