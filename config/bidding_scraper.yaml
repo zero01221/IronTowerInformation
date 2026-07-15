@@ -4,11 +4,7 @@
 keywords:
   # 核心关键词 - 标题或描述必须包含其中至少一个
   core:
-<<<<<<< HEAD
     # 铁塔类型
-=======
-    # 铁塔相关
->>>>>>> 117299cc0ac4358d094eb4bce3dbaa9ede3c28aa
     - 铁塔
     - 钢管塔
     - 角钢塔
@@ -47,10 +43,8 @@ keywords:
     - 塔体检修
     # 中国铁塔相关
     - 中国铁塔
-<<<<<<< HEAD
     - 铁塔能源
     - 铁塔公司
-=======
     # 广播电视/发射设施相关（重点）
     - 广播电视
     - 发射台
@@ -66,8 +60,7 @@ keywords:
     - 调频发射
     - 数字电视发射
     - 无线电发射
->>>>>>> 117299cc0ac4358d094eb4bce3dbaa9ede3c28aa
-  
+
   # 云南地区关键词
   yunnan:
     - 云南
@@ -118,7 +111,6 @@ filter:
 # 6. 云南省政府采购网 http://www.ccgpyunnan.gov.cn/page/procurement/procurementList.html
 
 sources:
-<<<<<<< HEAD
   # 已禁用旧爬虫
   yfbzb:
     enabled: false
@@ -133,7 +125,6 @@ sources:
     name: 云南省公共资源交易中心（已禁用）
   
   # 新爬虫配置
-=======
   # 中国铁塔电子采购平台（官方平台，信息最权威）
   # 网址: https://ebid.chinatowercom.cn
   # 说明: 铁塔公司官方采购平台，所有铁塔项目都会在此发布
@@ -201,9 +192,8 @@ sources:
     max_pages: 3
     region_filter: yunnan
   
-  # 中国政府采购网（已存在）
+  # 中国政府采购网
   # 网址: http://www.ccgp.gov.cn
->>>>>>> 117299cc0ac4358d094eb4bce3dbaa9ede3c28aa
   ccgp:
     enabled: true
     name: 中国政府采购网
@@ -216,7 +206,6 @@ sources:
       - 通信铁塔
       - 塔桅
       - 广播电视
-<<<<<<< HEAD
       - 发射塔
   
   ccgp_yunnan:
@@ -253,7 +242,6 @@ sources:
     base_url: https://txzbqy.miit.gov.cn
     search_url: https://txzbqy.miit.gov.cn/api/bidding/search
     max_pages: 3
-=======
       - 发射台
       - 发射塔
   
@@ -296,7 +284,6 @@ sources:
     name: 云南省公共资源交易中心
     api_url: https://ggzy.yn.gov.cn/ynggfwpt-home-api/jyzyCenter/jyInfo/gcjs/getZbggList
     region_filter: none
->>>>>>> 117299cc0ac4358d094eb4bce3dbaa9ede3c28aa
 
 # 请求配置
 request:
