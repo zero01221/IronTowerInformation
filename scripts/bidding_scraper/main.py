@@ -17,7 +17,7 @@ from .config import Config
 from .database import Database
 from .logger import get_logger
 from .base_crawler import CrawlerManager
-from .crawlers import YfbzbCrawler, CcgpCrawler, YnggzyCrawler, ChinabiddingCrawler
+from .crawlers import YfbzbCrawler, CcgpCrawler, YnggzyCrawler
 from .output import OutputFormatter
 from .notification import NotifierFactory
 
@@ -40,9 +40,6 @@ def create_crawler_manager() -> CrawlerManager:
     
     if "ynggzy" in sources:
         manager.register(YnggzyCrawler(sources["ynggzy"]))
-    
-    if "chinabidding" in sources:
-        manager.register(ChinabiddingCrawler(sources["chinabidding"]))
     
     return manager
 
@@ -101,7 +98,7 @@ def main():
         logger.info(f"新增 {saved_count} 条招标信息")
         
         # 发送通知
-        notification_config = config.get("notification", {})
+        notification_config = config.get_notification_config()
         if notification_config:
             notifier_factory = NotifierFactory(notification_config)
             enabled_notifiers = notifier_factory.get_enabled_notifiers()
