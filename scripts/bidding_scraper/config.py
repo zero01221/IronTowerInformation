@@ -112,6 +112,30 @@ class Config:
         """获取User-Agent列表"""
         return self.get_list("request.user_agents")
     
+    def get_notification_config(self) -> Dict[str, Any]:
+        """获取通知配置，支持从环境变量读取Webhook"""
+        notification = self.get("notification", {})
+        
+        # 从环境变量覆盖Webhook URL（优先级更高）
+        # 这样可以避免将敏感的Webhook地址提交到仓库
+        feishu_env = os.environ.get("FEISHU_WEBHOOK_URL")
+        if feishu_env:
+            notification.setdefault("feishu", {})["webhook_url"] = feishu_env
+        
+        wechat_env = os.environ.get("WECHAT_WEBHOOK_URL")
+        if wechat_env:
+            notification.setdefault("wechat", {})["webhook_url"] = wechat_env
+        
+        dingtalk_env = os.environ.get("DINGTALK_WEBHOOK_URL")
+        if dingtalk_env:
+            notification.setdefault("dingtalk", {})["webhook_url"] = dingtalk_env
+        
+        dingtalk_secret_env = os.environ.get("DINGTALK_SECRET")
+        if dingtalk_secret_env:
+            notification.setdefault("dingtalk", {})["secret"] = dingtalk_secret_env
+        
+        return notification
+    
     def _get_default_config(self) -> Dict[str, Any]:
         """获取默认配置"""
         return {

@@ -4,7 +4,11 @@
 keywords:
   # 核心关键词 - 标题或描述必须包含其中至少一个
   core:
+<<<<<<< HEAD
     # 铁塔类型
+=======
+    # 铁塔相关
+>>>>>>> 117299cc0ac4358d094eb4bce3dbaa9ede3c28aa
     - 铁塔
     - 钢管塔
     - 角钢塔
@@ -43,8 +47,26 @@ keywords:
     - 塔体检修
     # 中国铁塔相关
     - 中国铁塔
+<<<<<<< HEAD
     - 铁塔能源
     - 铁塔公司
+=======
+    # 广播电视/发射设施相关（重点）
+    - 广播电视
+    - 发射台
+    - 发射塔
+    - 转播台
+    - 无线发射
+    - 信号塔
+    - 信号塔维护
+    - 信号塔检修
+    - 天线塔
+    - 广播塔
+    - 电视塔
+    - 调频发射
+    - 数字电视发射
+    - 无线电发射
+>>>>>>> 117299cc0ac4358d094eb4bce3dbaa9ede3c28aa
   
   # 云南地区关键词
   yunnan:
@@ -79,8 +101,24 @@ industry:
   - 信号覆盖
   - 无线通信
 
+# 过滤配置
+filter:
+  # 日期过滤：只保留最近N天的信息（默认15天）
+  # 修改此值可以调整抓取的时间范围
+  # 例如：7 表示只抓取最近7天的信息，30 表示最近30天
+  days_limit: 15
+
 # 数据源配置
+# 用户指定的6个网站：
+# 1. 中国招标投标公共服务平台 www.cebpubservice.com
+# 2. 中国铁塔在线商务平台 www.tower.com.cn（主要，重点）
+# 3. 中国铁塔电子采购平台 ebid.chinatowercom.cn
+# 4. 通信工程建设项目招标投标管理信息平台 txzbqy.miit.gov.cn
+# 5. 中国政府采购网 www.ccgp.gov.cn
+# 6. 云南省政府采购网 http://www.ccgpyunnan.gov.cn/page/procurement/procurementList.html
+
 sources:
+<<<<<<< HEAD
   # 已禁用旧爬虫
   yfbzb:
     enabled: false
@@ -95,6 +133,77 @@ sources:
     name: 云南省公共资源交易中心（已禁用）
   
   # 新爬虫配置
+=======
+  # 中国铁塔电子采购平台（官方平台，信息最权威）
+  # 网址: https://ebid.chinatowercom.cn
+  # 说明: 铁塔公司官方采购平台，所有铁塔项目都会在此发布
+  chinatower_ebid:
+    enabled: true
+    name: 中国铁塔电子采购平台
+    base_url: https://ebid.chinatowercom.cn
+    # API接口需要进一步分析，暂时使用页面抓取
+    list_url: https://ebid.chinatowercom.cn/zgtt/gggs/003001/list.html
+    keywords:
+      - 铁塔
+      - 塔桅
+      - 广播电视
+      - 发射台
+      - 发射塔
+    max_pages: 3
+  
+  # 中国铁塔在线商务平台（主要，重点）
+  # 网址: https://www.tower.com.cn
+  # 说明: 铁塔公司官方商务平台，与电子采购平台同步发布招标信息
+  chinatower_biz:
+    enabled: true
+    name: 中国铁塔在线商务平台
+    base_url: https://www.tower.com.cn
+    # 需要进一步分析API接口
+    keywords:
+      - 铁塔
+      - 塔桅
+      - 广播电视
+      - 发射台
+      - 发射塔
+    max_pages: 3
+  
+  # 中国招标投标公共服务平台
+  # 网址: http://www.cebpubservice.com
+  # 说明: 国家级招标信息发布平台，信息权威可靠
+  cebpubservice:
+    enabled: true
+    name: 中国招标投标公共服务平台
+    base_url: http://www.cebpubservice.com
+    search_url: http://bulletin.cebpubservice.com
+    keywords:
+      - 铁塔
+      - 塔桅
+      - 广播电视
+      - 发射台
+      - 发射塔
+    max_pages: 3
+    region_filter: yunnan
+  
+  # 通信工程建设项目招标投标管理信息平台
+  # 网址: https://txzbqy.miit.gov.cn
+  # 说明: 工信部主管的通信工程招标平台
+  miit_txzb:
+    enabled: true
+    name: 通信工程建设项目招标投标管理信息平台
+    base_url: https://txzbqy.miit.gov.cn
+    keywords:
+      - 铁塔
+      - 塔桅
+      - 广播电视
+      - 发射台
+      - 发射塔
+      - 通信塔
+    max_pages: 3
+    region_filter: yunnan
+  
+  # 中国政府采购网（已存在）
+  # 网址: http://www.ccgp.gov.cn
+>>>>>>> 117299cc0ac4358d094eb4bce3dbaa9ede3c28aa
   ccgp:
     enabled: true
     name: 中国政府采购网
@@ -107,6 +216,7 @@ sources:
       - 通信铁塔
       - 塔桅
       - 广播电视
+<<<<<<< HEAD
       - 发射塔
   
   ccgp_yunnan:
@@ -143,6 +253,50 @@ sources:
     base_url: https://txzbqy.miit.gov.cn
     search_url: https://txzbqy.miit.gov.cn/api/bidding/search
     max_pages: 3
+=======
+      - 发射台
+      - 发射塔
+  
+  # 云南省政府采购网
+  # 网址: http://www.ccgpyunnan.gov.cn/page/procurement/procurementList.html
+  # 说明: 云南省政府采购信息官方发布平台
+  ccgp_yunnan:
+    enabled: true
+    name: 云南省政府采购网
+    base_url: http://www.ccgpyunnan.gov.cn
+    list_url: http://www.ccgpyunnan.gov.cn/page/procurement/procurementList.html
+    keywords:
+      - 铁塔
+      - 塔桅
+      - 广播电视
+      - 发射台
+      - 发射塔
+    max_pages: 3
+  
+  # 乙方宝（聚合平台，数据丰富）
+  yfbzb:
+    enabled: true
+    name: 乙方宝
+    base_url: https://www.yfbzb.com
+    search_url: https://www.yfbzb.com/search/invitedBidSearch
+    keywords:
+      - 铁塔
+      - 塔桅
+      - 广播电视
+      - 发射台
+      - 发射塔
+    max_pages: 2
+    region_filter: yunnan
+    fetch_detail: false
+  
+  # 云南省公共资源交易中心
+  # 网站本身全是云南省信息，无需检查地区
+  ynggzy:
+    enabled: true
+    name: 云南省公共资源交易中心
+    api_url: https://ggzy.yn.gov.cn/ynggfwpt-home-api/jyzyCenter/jyInfo/gcjs/getZbggList
+    region_filter: none
+>>>>>>> 117299cc0ac4358d094eb4bce3dbaa9ede3c28aa
 
 # 请求配置
 request:
@@ -162,6 +316,90 @@ database:
   path: output/bidding_history.db
   # 保留历史记录的天数
   retention_days: 90
+
+# =============================================================================
+# 通知配置
+# =============================================================================
+# 当有新的招标信息时，可以通过以下渠道发送通知
+# 可以同时启用多个通知渠道，也可以全部禁用
+# =============================================================================
+notification:
+  # ---------------------------------------------------------------------------
+  # 飞书通知
+  # ---------------------------------------------------------------------------
+  # 启用方式：将 enabled 改为 true，并填写 webhook_url
+  # 
+  # 获取 Webhook URL 的步骤：
+  # 1. 打开飞书，进入要接收通知的群聊
+  # 2. 点击群设置（右上角齿轮图标）
+  # 3. 选择"群机器人" -> "添加机器人"
+  # 4. 选择"自定义机器人"
+  # 5. 设置机器人名称（如"招标信息通知"）
+  # 6. 复制 Webhook 地址，粘贴到下方
+  # ---------------------------------------------------------------------------
+  feishu:
+    enabled: false
+    # 飞书 Webhook URL - 请替换为你自己的 Webhook 地址
+    webhook_url: "https://open.feishu.cn/open-apis/bot/v2/hook/your-webhook-id"
+  
+  # ---------------------------------------------------------------------------
+  # 企业微信通知
+  # ---------------------------------------------------------------------------
+  # 启用方式：将 enabled 改为 true，并填写 webhook_url
+  # 
+  # 获取 Webhook URL 的步骤：
+  # 1. 打开企业微信，进入要接收通知的群聊
+  # 2. 点击群设置（右上角"..."）
+  # 3. 选择"群机器人" -> "添加机器人"
+  # 4. 设置机器人名称（如"招标信息通知"）
+  # 5. 复制 Webhook 地址，粘贴到下方
+  # ---------------------------------------------------------------------------
+  wechat:
+    enabled: false
+    # 企业微信 Webhook URL - 请替换为你自己的 Webhook 地址
+    webhook_url: "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=your-webhook-key"
+  
+  # ---------------------------------------------------------------------------
+  # 钉钉通知
+  # ---------------------------------------------------------------------------
+  # 启用方式：将 enabled 改为 true，并填写 webhook_url
+  # 
+  # 获取 Webhook URL 的步骤：
+  # 1. 打开钉钉，进入要接收通知的群聊
+  # 2. 点击群设置（右上角齿轮图标）
+  # 3. 选择"智能群助手" -> "添加机器人"
+  # 4. 选择"自定义"机器人
+  # 5. 设置机器人名称（如"招标信息通知"）
+  # 6. 安全设置建议选择"自定义关键词"，填写"招标"
+  #    （因为消息内容会包含"招标"关键词）
+  # 7. 复制 Webhook 地址，粘贴到下方
+  # 
+  # 如果选择了"加签"安全设置，还需要填写 secret
+  # ---------------------------------------------------------------------------
+  dingtalk:
+    enabled: false
+    # 钉钉 Webhook URL - 请替换为你自己的 Webhook 地址
+    webhook_url: "https://oapi.dingtalk.com/robot/send?access_token=your-access-token"
+    # 如果使用了"加签"安全设置，填写密钥（以 SEC 开头）
+    # secret: "SEC..."
+
+# =============================================================================
+# 定时任务配置
+# =============================================================================
+# 配置自动推送的时间
+# 注意：实际定时任务需要通过系统的 cron (Linux/Mac) 或任务计划程序 (Windows) 配置
+# 这里的配置仅用于记录推送时间，方便用户查看
+# =============================================================================
+schedule:
+  # 推送时间（24小时制）
+  # 可以配置多个时间点，每天会在这些时间点执行推送
+  push_times:
+    - "08:00"  # 早上8点
+    # - "12:00"  # 中午12点（如需更多时间点，取消注释）
+    # - "18:00"  # 下午6点
+  
+  # 时区（用于定时任务）
+  timezone: "Asia/Shanghai"
 
 # 输出配置
 output:
