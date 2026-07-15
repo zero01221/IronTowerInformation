@@ -17,7 +17,6 @@ from .config import Config
 from .database import Database
 from .logger import get_logger
 from .base_crawler import CrawlerManager
-<<<<<<< HEAD
 from .crawlers import (
     CcgpCrawler,
     CcgpYunnanCrawler,
@@ -26,9 +25,6 @@ from .crawlers import (
     TowerComCnCrawler,
     MiitTxzbqyCrawler,
 )
-=======
-from .crawlers import YfbzbCrawler, CcgpCrawler, YnggzyCrawler
->>>>>>> 117299cc0ac4358d094eb4bce3dbaa9ede3c28aa
 from .output import OutputFormatter
 from .notification import NotifierFactory
 
@@ -49,7 +45,6 @@ def create_crawler_manager() -> CrawlerManager:
     if "ccgp_yunnan" in sources:
         manager.register(CcgpYunnanCrawler(sources["ccgp_yunnan"]))
     
-<<<<<<< HEAD
     if "cebpubservice" in sources:
         manager.register(CebpubserviceCrawler(sources["cebpubservice"]))
     
@@ -62,8 +57,6 @@ def create_crawler_manager() -> CrawlerManager:
     if "miit_txzbqy" in sources:
         manager.register(MiitTxzbqyCrawler(sources["miit_txzbqy"]))
     
-=======
->>>>>>> 117299cc0ac4358d094eb4bce3dbaa9ede3c28aa
     return manager
 
 
