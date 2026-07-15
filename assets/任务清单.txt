@@ -1,0 +1,53 @@
+任务1：优化提示词，侧重铁塔中的“广播电视”、“发射台”、“发射塔”等。优化匹配策略。已完成）
+
+任务2：删除乙方宝等初始三个网站的抓取逻辑
+更改抓取网址为以下网址
+中国招标投标公共服务平台www.cebpubservice.com
+中国铁塔在线商务平台www.tower.com.cn（主要，重点）
+中国铁塔电子采购平台ebid.chinatowercom.cn
+通信工程建设项目招标投标管理信息平台txzbqy.miit.gov.cn
+中国政府采购网 www.ccgp.gov.cn
+云南省政府采购网http://www.ccgpyunnan.gov.cn/page/procurement/procurementList.html
+不惜一切代价找到以上六个网站的api接口。解决信息处理的问题
+
+任务3：由于我的项目是在一个热点信息抓取的项目上重构的，可能会有很多无关的文件或者代码，比如IronTowerInformation\config\config.yaml中的部分内容。# ===============================================================
+# 2. 数据源 - 热榜平台
+#
+# enabled: 是否启用热榜抓取（总开关）
+# sources: 平台列表
+#   - id: 平台唯一标识（勿修改）
+#   - name: 显示名称（可自定义，修改后不影响运行）
+# ===============================================================
+platforms:
+  enabled: true # 是否启用热榜平台抓取
+  sources:
+    - id: "toutiao"
+      name: "今日头条"
+    - id: "baidu"
+      name: "百度热搜"
+    - id: "wallstreetcn-hot"
+      name: "华尔街见闻"
+    - id: "thepaper"
+      name: "澎湃新闻"
+    - id: "bilibili-hot-search"
+      name: "bilibili 热搜"
+    - id: "cls-hot"
+      name: "财联社热门"
+    - id: "ifeng"
+      name: "凤凰网"
+    - id: "tieba"
+      name: "贴吧"
+    - id: "weibo"
+      name: "微博"
+    - id: "douyin"
+      name: "抖音"
+    - id: "zhihu"
+      name: "知乎"清理这些无关的代码。同时在配置文件中配置自动推送时间的相关设置，每天早上八点借助git hooks（已配置好）自动推送，可参考config.yaml中的写法。同时考虑推送到飞书等应用后信息显示的格式（至少要显示招标文件的文件名，使用超链接格式，点击后跳转对应的网址；招标文件的发布时间等信息）。
+
+任务4：如果借助git hooks，还需要在文件中明文标注飞书机器人的Webhook吗，如果不需要，修改。
+
+任务5：使用github测试时，自动推送信息成功，但是本地日志文件并没有更新，修复问题。
+
+任务6：以上代码全部修改并测试完成后，更新readme.md文件，同时检查crawler.yml文件是否可用。
+
+全部完成后，更新到主仓库。如果遇到无法推送的，则告诉我完整的代码，并放弃该文件的推送

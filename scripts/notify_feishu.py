@@ -34,10 +34,13 @@ def send_feishu_notification(webhook_url: str, items: list):
         title_text = item.get('title', '未知')
         url = item.get('url', '')
         
-        content += f"**{i}. [{source}]** {date}\n"
-        content += f"   {title_text}\n"
+        # 飞书 Markdown 格式：标题作为超链接
         if url:
-            content += f"   [查看详情]({url})\n"
+            content += f"**{i}.** [{title_text}]({url})\n"
+        else:
+            content += f"**{i}.** {title_text}\n"
+        
+        content += f"    {date} | 📰 {source}\n"
         content += "\n"
     
     if len(items) > 20:

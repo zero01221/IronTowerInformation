@@ -45,7 +45,9 @@ class Logger:
         # 文件handler（可选）
         log_file = config.get("logging.file")
         if log_file:
-            log_path = Path(log_file)
+            # 使用项目根目录作为基础路径
+            project_root = Path(__file__).parent.parent.parent
+            log_path = project_root / log_file
             log_path.parent.mkdir(parents=True, exist_ok=True)
             
             max_size = config.get_int("logging.max_size", 10) * 1024 * 1024  # MB to bytes

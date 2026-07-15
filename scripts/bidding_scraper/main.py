@@ -17,7 +17,14 @@ from .config import Config
 from .database import Database
 from .logger import get_logger
 from .base_crawler import CrawlerManager
-from .crawlers import YfbzbCrawler, CcgpCrawler, YnggzyCrawler, ChinabiddingCrawler
+from .crawlers import (
+    CcgpCrawler,
+    CcgpYunnanCrawler,
+    CebpubserviceCrawler,
+    ChinaTowerComCrawler,
+    TowerComCnCrawler,
+    MiitTxzbqyCrawler,
+)
 from .output import OutputFormatter
 
 logger = get_logger(__name__)
@@ -31,17 +38,23 @@ def create_crawler_manager() -> CrawlerManager:
     sources = config.get_enabled_sources()
     
     # 注册各数据源爬虫
-    if "yfbzb" in sources:
-        manager.register(YfbzbCrawler(sources["yfbzb"]))
-    
     if "ccgp" in sources:
         manager.register(CcgpCrawler(sources["ccgp"]))
     
-    if "ynggzy" in sources:
-        manager.register(YnggzyCrawler(sources["ynggzy"]))
+    if "ccgp_yunnan" in sources:
+        manager.register(CcgpYunnanCrawler(sources["ccgp_yunnan"]))
     
-    if "chinabidding" in sources:
-        manager.register(ChinabiddingCrawler(sources["chinabidding"]))
+    if "cebpubservice" in sources:
+        manager.register(CebpubserviceCrawler(sources["cebpubservice"]))
+    
+    if "chinatowercom" in sources:
+        manager.register(ChinaTowerComCrawler(sources["chinatowercom"]))
+    
+    if "tower_com_cn" in sources:
+        manager.register(TowerComCnCrawler(sources["tower_com_cn"]))
+    
+    if "miit_txzbqy" in sources:
+        manager.register(MiitTxzbqyCrawler(sources["miit_txzbqy"]))
     
     return manager
 

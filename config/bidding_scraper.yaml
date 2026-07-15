@@ -4,6 +4,7 @@
 keywords:
   # 核心关键词 - 标题或描述必须包含其中至少一个
   core:
+    # 铁塔类型
     - 铁塔
     - 钢管塔
     - 角钢塔
@@ -17,6 +18,16 @@ keywords:
     - 单管塔
     - 景观塔
     - 仿生树
+    - 塔体
+    # 广播电视/发射相关
+    - 广播电视
+    - 发射台
+    - 发射塔
+    - 转播台
+    - 无线发射
+    - 信号塔
+    - 微波塔
+    # 维护检修
     - 铁塔维护
     - 铁塔维修
     - 铁塔检修
@@ -26,12 +37,14 @@ keywords:
     - 塔桅维修
     - 塔桅检修
     - 塔桅检测
-    - 中国铁塔
-    - 铁塔能源
-    - 铁塔公司
     - 塔体维护
     - 塔体维修
     - 塔体检测
+    - 塔体检修
+    # 中国铁塔相关
+    - 中国铁塔
+    - 铁塔能源
+    - 铁塔公司
   
   # 云南地区关键词
   yunnan:
@@ -68,20 +81,20 @@ industry:
 
 # 数据源配置
 sources:
+  # 已禁用旧爬虫
   yfbzb:
-    enabled: true
-    name: 乙方宝
-    base_url: https://www.yfbzb.com
-    search_url: https://www.yfbzb.com/search/invitedBidSearch
-    keywords:
-      - 铁塔
-      - 塔桅
-    max_pages: 2
-    # 全国数据，过滤云南地区
-    region_filter: yunnan
-    # 是否抓取详情页获取原始链接（开启会增加请求数量，可能触发反爬虫）
-    fetch_detail: false
+    enabled: false
+    name: 乙方宝（已禁用）
   
+  chinabidding:
+    enabled: false
+    name: 中国采购与招标网（已禁用）
+  
+  ynggzy:
+    enabled: false
+    name: 云南省公共资源交易中心（已禁用）
+  
+  # 新爬虫配置
   ccgp:
     enabled: true
     name: 中国政府采购网
@@ -93,21 +106,43 @@ sources:
       - 中国铁塔
       - 通信铁塔
       - 塔桅
+      - 广播电视
+      - 发射塔
   
-  ynggzy:
+  ccgp_yunnan:
     enabled: true
-    name: 云南省公共资源交易中心
-    api_url: https://ggzy.yn.gov.cn/ynggfwpt-home-api/jyzyCenter/jyInfo/gcjs/getZbggList
-    # 网站本身全是云南省信息，无需检查地区
-    region_filter: none
+    name: 云南省政府采购网
+    base_url: http://www.ccgpyunnan.gov.cn
+    list_url: http://www.ccgpyunnan.gov.cn/page/procurement/procurementList.html
+    max_pages: 3
   
-  chinabidding:
-    # 暂时禁用 - 网站返回502错误，可能检测到自动化访问
-    enabled: false
-    name: 中国采购与招标网
-    search_url: https://www.chinabidding.com/search/proj.htm
-    keyword: 铁塔
-    max_pages: 1
+  cebpubservice:
+    enabled: true
+    name: 中国招标投标公共服务平台
+    base_url: https://www.cebpubservice.com
+    search_url: https://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getSearch.do
+    max_pages: 3
+  
+  chinatowercom:
+    enabled: true
+    name: 中国铁塔电子采购平台
+    base_url: https://ebid.chinatowercom.cn
+    api_url: https://ebid.chinatowercom.cn/tcpms/tenderee/tendererBiddingInfoController/getTendererBiddingInfoList
+    max_pages: 3
+  
+  tower_com_cn:
+    enabled: true
+    name: 中国铁塔在线商务平台
+    base_url: https://www.tower.com.cn
+    search_url: https://www.tower.com.cn/bidding/biddingList
+    max_pages: 3
+  
+  miit_txzbqy:
+    enabled: true
+    name: 通信工程招标投标平台
+    base_url: https://txzbqy.miit.gov.cn
+    search_url: https://txzbqy.miit.gov.cn/api/bidding/search
+    max_pages: 3
 
 # 请求配置
 request:
