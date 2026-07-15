@@ -94,7 +94,6 @@ keywords:
     # ... 更多关键词
 ```
 
-<<<<<<< HEAD
 ### 4. 配置定时推送
 
 GitHub Actions 已配置好每天早上 8:00（北京时间）自动运行。
@@ -110,44 +109,28 @@ on:
 
 ---
 
-##  本地运行
-=======
----
 
 ## 💻 本地运行
->>>>>>> 117299cc0ac4358d094eb4bce3dbaa9ede3c28aa
 
 ### 环境要求
 
 - Python 3.12+
-<<<<<<< HEAD
 - uv（包管理器）
-=======
-- pip 或 uv（推荐）
->>>>>>> 117299cc0ac4358d094eb4bce3dbaa9ede3c28aa
 
 ### 安装依赖
 
 ```bash
-<<<<<<< HEAD
 # 使用 uv 安装
-=======
-# 使用 uv（推荐）
->>>>>>> 117299cc0ac4358d094eb4bce3dbaa9ede3c28aa
 uv sync
 
 # 或使用 pip
 pip install -r requirements.txt
-<<<<<<< HEAD
 pip install beautifulsoup4
-=======
->>>>>>> 117299cc0ac4358d094eb4bce3dbaa9ede3c28aa
 ```
 
 ### 运行爬虫
 
 ```bash
-<<<<<<< HEAD
 # 运行爬虫并生成 RSS
 python -m scripts.bidding_scraper
 
@@ -161,22 +144,12 @@ python -m scripts.bidding_scraper --output output/bidding_feed.xml
 ### 查看统计
 
 ```bash
-=======
-# 运行爬虫（生成 RSS 文件）
-python -m scripts.bidding_scraper
-
-# 只打印结果，不生成文件
-python -m scripts.bidding_scraper --dry-run
-
 # 查看数据库统计信息
->>>>>>> 117299cc0ac4358d094eb4bce3dbaa9ede3c28aa
 python -m scripts.bidding_scraper --stats
 ```
 
 ---
 
-<<<<<<< HEAD
-=======
 ## ⏰ 定时任务配置
 
 ### 配置通知渠道
@@ -233,12 +206,10 @@ crontab -e
 
 ---
 
->>>>>>> 117299cc0ac4358d094eb4bce3dbaa9ede3c28aa
 ## 📁 项目结构
 
 ```
 IronTowerInformation/
-<<<<<<< HEAD
 ├── config/
 │   ├── bidding_scraper.yaml    # 爬虫配置
 │   └── config.yaml             # TrendRadar 配置
@@ -256,26 +227,6 @@ IronTowerInformation/
 │   └── bidding_scraper.log     # 日志文件
 ├── .github/workflows/
 │   └── daily-crawl.yml         # GitHub Actions 定时任务
-=======
-├── scripts/
-│   └── bidding_scraper/     # 招标爬虫模块
-│       ├── main.py          # 主入口
-│       ├── config.py        # 配置管理
-│       ├── models.py        # 数据模型
-│       ├── database.py      # SQLite 数据库
-│       ├── base_crawler.py  # 爬虫基类
-│       ├── crawlers/        # 各数据源爬虫
-│       ├── notification/    # 通知模块
-│       ├── filters.py       # 过滤器
-│       ├── output.py        # 输出格式化
-│       └── logger.py        # 日志管理
-├── config/
-│   └── bidding_scraper.yaml # 爬虫配置文件
-├── output/                  # 输出目录
-│   ├── bidding_feed.xml     # RSS 文件
-│   ├── bidding_history.db   # 历史数据库
-│   └── bidding_scraper.log  # 运行日志
->>>>>>> 117299cc0ac4358d094eb4bce3dbaa9ede3c28aa
 └── README.md
 ```
 
@@ -283,7 +234,6 @@ IronTowerInformation/
 
 ## 🔧 配置说明
 
-<<<<<<< HEAD
 ### bidding_scraper.yaml
 
 ```yaml
@@ -315,7 +265,7 @@ push:
   feishu:
     enabled: true
     webhook: ""               # 留空则从环境变量读取
-=======
+
 ### 数据源配置
 
 编辑 `config/bidding_scraper.yaml`：
@@ -352,14 +302,12 @@ request:
   timeout: 30               # 请求超时时间（秒）
   retry_attempts: 3         # 重试次数
   delay_between_requests: 8 # 请求间隔（秒）
->>>>>>> 117299cc0ac4358d094eb4bce3dbaa9ede3c28aa
 ```
 
 ---
 
 ## 📝 更新日志
 
-<<<<<<< HEAD
 ### 2026-07-14
 - 重构爬虫模块，支持 6 个数据源
 - 增加日期过滤功能（默认 15 天）
@@ -367,7 +315,6 @@ request:
 - 优化飞书消息格式（超链接 + 时间）
 - 修复本地日志文件不更新问题
 - 清理无关代码（热榜平台配置）
-=======
 ### v2.1.0 (2026-07-12)
 
 - ✨ 添加日期过滤功能，默认只抓取最近 15 天的信息
@@ -389,14 +336,10 @@ request:
 ## 🤝 贡献
 
 欢迎提交 Issue 和 Pull Request！
->>>>>>> 117299cc0ac4358d094eb4bce3dbaa9ede3c28aa
 
 ---
 
 ## 📄 许可证
 
-<<<<<<< HEAD
 GPL-3.0 License
-=======
-本项目采用 GPL-3.0 许可证 - 详见 [LICENSE](LICENSE) 文件
->>>>>>> 117299cc0ac4358d094eb4bce3dbaa9ede3c28aa
+
