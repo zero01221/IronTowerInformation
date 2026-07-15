@@ -1,0 +1,49 @@
+# 招标信息爬虫 - 每日定时任务
+# 每天早上 8:00 (北京时间) 自动运行
+
+name: 招标信息每日抓取
+
+on:
+  schedule:
+    # 每天 UTC 0:00 (北京时间 8:00)
+    - cron: '0  0 * * *'
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+    
+    - name: 设置 Python 环境
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    
+    - name: 安装依赖
+      run: |
+        pip install -r requirements.txt
+        pip install beautifulsoup4
+    
+    - name: 运行爬虫
+      run: |
+        python -m scripts.bidding_scraper --output output/bidding_feed.xml
+      env:
+        # 飞书机器人 Webhook（在 GitHub Secrets 中配置）
+        FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
+    
+    - name: 发送飞书通知
+      if: env.FEISHU_WEBHOOK != ''
+      run: |
+        python scripts/notify_feishu.py
+      env:
+        FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
+    
+    - name: 上传 RSS 文件
+      uses: actions/upload-artifact@v4
+      with:
+        name: bidding-feed
+        path: output/bidding_feed.xml
+        retention-days: 7
