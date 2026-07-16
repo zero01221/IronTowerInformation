@@ -1,0 +1,5 @@
+先从仓库中更新代码
+然后测试能否跑通
+已知的问题：models.py 中缺少 BiddingItem 类的定义，但 ccgp_yunnan.py 尝试导入它
+测试是否还有其他问题。
+

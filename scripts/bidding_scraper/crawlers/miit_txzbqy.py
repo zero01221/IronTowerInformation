@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from typing import List, Optional
-from ..models import BiddingItem
+from ..models import BidItem
 from ..base_crawler import BaseCrawler
 from ..utils import fetch_page, logger
 
@@ -13,6 +13,11 @@ class MiitTxzbqyCrawler(BaseCrawler):
     name = "通信工程招标投标平台"
     base_url = "https://txzbqy.miit.gov.cn"
     search_url = "https://txzbqy.miit.gov.cn/api/bidding/search"
+
+    def __init__(self, source_config: dict):
+        """初始化"""
+        super().__init__("miit_txzbqy", source_config)
+        self.keywords = self.config.get("keywords", ["铁塔"])
 
     def _get_headers(self) -> dict:
         return {
@@ -31,8 +36,20 @@ class MiitTxzbqyCrawler(BaseCrawler):
     def _get_page_delay(self) -> int:
         return 3
 
-    def fetch(self, keyword: str, page: int = 1) -> List[BiddingItem]:
-        """获取指定关键词和页码的招标信息"""
+    def fetch(self) -> List[BidItem]:
+        """获取招标信息"""
+        all_items = []
+
+        for keyword in self.keywords:
+            logger.info(f"[{self.display_name}] 搜索关键词: {keyword}")
+            items = self._fetch_keyword(keyword)
+            all_items.extend(items)
+            self.delay()
+
+        return all_items
+
+    def _fetch_keyword(self, keyword: str) -> List[BidItem]:
+        """获取指定关键词的招标信息"""
         items = []
 
         try:
@@ -40,7 +57,7 @@ class MiitTxzbqyCrawler(BaseCrawler):
             import json
             payload = {
                 "keyword": keyword,
-                "pageNo": page,
+                "pageNo": 1,
                 "pageSize": 20,
                 "type": "bidding",
             }
@@ -74,7 +91,7 @@ class MiitTxzbqyCrawler(BaseCrawler):
 
         return items
 
-    def _parse_record(self, record: dict) -> Optional[BiddingItem]:
+    def _parse_record(self, record: dict) -> Optional[BidItem]:
         """解析单条记录"""
         try:
             title = record.get("title", "") or record.get("projectName", "")
@@ -95,7 +112,7 @@ class MiitTxzbqyCrawler(BaseCrawler):
                     except:
                         date_obj = datetime.now()
 
-            return BiddingItem(
+            return BidItem(
                 title=title,
                 url=url if url.startswith("http") else f"{self.base_url}{url}",
                 date=date_obj.strftime("%Y-%m-%d") if date_obj else datetime.now().strftime("%Y-%m-%d"),

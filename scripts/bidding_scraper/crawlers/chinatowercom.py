@@ -3,7 +3,7 @@
 import re
 from datetime import datetime
 from typing import List, Optional
-from ..models import BiddingItem
+from ..models import BidItem
 from ..base_crawler import BaseCrawler
 from ..utils import fetch_page, logger
 
@@ -14,6 +14,11 @@ class ChinaTowerComCrawler(BaseCrawler):
     name = "中国铁塔电子采购平台"
     base_url = "https://ebid.chinatowercom.cn"
     api_url = "https://ebid.chinatowercom.cn/tcpms/tenderee/tendererBiddingInfoController/getTendererBiddingInfoList"
+
+    def __init__(self, source_config: dict):
+        """初始化"""
+        super().__init__("chinatowercom", source_config)
+        self.keywords = self.config.get("keywords", ["铁塔"])
 
     def _get_headers(self) -> dict:
         return {
@@ -33,14 +38,26 @@ class ChinaTowerComCrawler(BaseCrawler):
     def _get_page_delay(self) -> int:
         return 3
 
-    def fetch(self, keyword: str, page: int = 1) -> List[BiddingItem]:
-        """获取指定关键词和页码的招标信息"""
+    def fetch(self) -> List[BidItem]:
+        """获取招标信息"""
+        all_items = []
+
+        for keyword in self.keywords:
+            logger.info(f"[{self.display_name}] 搜索关键词: {keyword}")
+            items = self._fetch_keyword(keyword)
+            all_items.extend(items)
+            self.delay()
+
+        return all_items
+
+    def _fetch_keyword(self, keyword: str) -> List[BidItem]:
+        """获取指定关键词的招标信息"""
         items = []
 
         try:
             # 构建请求参数
             data = {
-                "pageNo": page,
+                "pageNo": 1,
                 "pageSize": 20,
                 "keyword": keyword,
                 "tenderType": "1",  # 招标公告
@@ -76,7 +93,7 @@ class ChinaTowerComCrawler(BaseCrawler):
 
         return items
 
-    def _parse_record(self, record: dict) -> Optional[BiddingItem]:
+    def _parse_record(self, record: dict) -> Optional[BidItem]:
         """解析单条记录"""
         try:
             title = record.get("tenderTitle", "")
@@ -97,7 +114,7 @@ class ChinaTowerComCrawler(BaseCrawler):
                     except:
                         date_obj = datetime.now()
 
-            return BiddingItem(
+            return BidItem(
                 title=title,
                 url=url if url.startswith("http") else f"{self.base_url}{url}",
                 date=date_obj.strftime("%Y-%m-%d") if date_obj else datetime.now().strftime("%Y-%m-%d"),
