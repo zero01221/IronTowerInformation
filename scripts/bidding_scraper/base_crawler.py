@@ -38,6 +38,9 @@ class BaseCrawler(ABC):
         self.timeout = app_config.get_int("request.timeout", 30)
         self.delay_between_requests = app_config.get_int("request.delay_between_requests", 5)
         
+        # 代理配置
+        self.proxies = app_config.get_proxies()
+        
         # 日期过滤配置：只保留最近N天的信息（可在配置文件中修改）
         self.days_limit = source_config.get("days_limit", app_config.get_int("filter.days_limit", 15))
     

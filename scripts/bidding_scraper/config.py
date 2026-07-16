@@ -112,6 +112,17 @@ class Config:
         """获取User-Agent列表"""
         return self.get_list("request.user_agents")
     
+    def get_proxies(self) -> Dict[str, str]:
+        """获取代理配置
+        
+        返回格式: {"http": "http://proxy:port", "https": "http://proxy:port"}
+        如果没有配置代理，返回空字典
+        """
+        proxy_url = self.get("request.proxy", "")
+        if proxy_url:
+            return {"http": proxy_url, "https": proxy_url}
+        return {}
+    
     def get_notification_config(self) -> Dict[str, Any]:
         """获取通知配置，支持从环境变量读取Webhook"""
         notification = self.get("notification", {})
