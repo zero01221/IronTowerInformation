@@ -114,11 +114,18 @@ class Config:
     
     def get_proxies(self) -> Dict[str, str]:
         """获取代理配置
-        
+
+        优先级：环境变量 BIDDING_PROXY > 配置文件 request.proxy
+
         返回格式: {"http": "http://proxy:port", "https": "http://proxy:port"}
         如果没有配置代理，返回空字典
+
+        环境变量示例：
+          BIDDING_PROXY=http://your-proxy:8080
+          BIDDING_PROXY=socks5://127.0.0.1:1080
         """
-        proxy_url = self.get("request.proxy", "")
+        # 环境变量优先级最高（适合 GitHub Actions Secrets 注入）
+        proxy_url = os.environ.get("BIDDING_PROXY", "") or self.get("request.proxy", "")
         if proxy_url:
             return {"http": proxy_url, "https": proxy_url}
         return {}

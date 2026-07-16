@@ -115,6 +115,7 @@ class CcgpCrawler(BaseCrawler):
                     headers=headers,
                     referer="https://www.ccgp.gov.cn/",
                     timeout=self.timeout,
+                    proxies=self.proxies,
                 )
 
                 if not soup:

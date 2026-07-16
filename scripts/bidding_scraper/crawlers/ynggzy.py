@@ -59,7 +59,13 @@ class YnggzyCrawler(BaseCrawler):
         }
         
         try:
-            resp = requests.post(api_url, json=payload, headers=headers, timeout=self.timeout)
+            resp = requests.post(
+                api_url,
+                json=payload,
+                headers=headers,
+                timeout=self.timeout,
+                proxies=self.proxies,
+            )
             data = resp.json()
             
             # 检查返回数据类型

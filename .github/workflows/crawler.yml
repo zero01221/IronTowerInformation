@@ -51,6 +51,8 @@ jobs:
           fi
 
       - name: Run bidding scraper
+        env:
+          BIDDING_PROXY: ${{ secrets.BIDDING_PROXY }}
         run: |
           python -m scripts.bidding_scraper.main --output output/bidding_feed.xml
           echo "Scraper finished. Feed items:"
