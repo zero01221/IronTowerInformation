@@ -87,3 +87,51 @@ class FeishuNotifier(BaseNotifier):
         except Exception as e:
             logger.error(f"[飞书通知] 发送异常: {e}")
             return False
+
+    def send_text(self, text: str) -> bool:
+        """
+        发送纯文本消息到飞书
+
+        Args:
+            text: 要发送的文本内容
+
+        Returns:
+            是否发送成功
+        """
+        if not self.enabled:
+            logger.debug("[飞书通知] 未启用，跳过")
+            return True
+
+        if not self.webhook_url:
+            logger.error("[飞书通知] Webhook URL 未配置")
+            return False
+
+        payload = {
+            "msg_type": "text",
+            "content": {
+                "text": text
+            }
+        }
+
+        try:
+            response = requests.post(
+                self.webhook_url,
+                json=payload,
+                timeout=10
+            )
+
+            if response.status_code == 200:
+                result = response.json()
+                if result.get("code") == 0:
+                    logger.info(f"[飞书通知] 文本消息发送成功")
+                    return True
+                else:
+                    logger.error(f"[飞书通知] 发送失败: {result.get('msg')}")
+                    return False
+            else:
+                logger.error(f"[飞书通知] HTTP 错误: {response.status_code}")
+                return False
+
+        except Exception as e:
+            logger.error(f"[飞书通知] 发送异常: {e}")
+            return False

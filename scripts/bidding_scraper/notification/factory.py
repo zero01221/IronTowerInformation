@@ -75,6 +75,28 @@ class NotifierFactory:
         
         return results
     
+    def send_text_all(self, text: str) -> Dict[str, bool]:
+        """
+        向所有启用的通知渠道发送纯文本消息（用于无数据时的通知）
+
+        Args:
+            text: 要发送的文本内容
+
+        Returns:
+            各通知渠道的发送结果
+        """
+        results = {}
+        for notifier in self.notifiers:
+            notifier_name = notifier.__class__.__name__.replace("Notifier", "").lower()
+            try:
+                success = notifier.send_text(text)
+                results[notifier_name] = success
+            except Exception as e:
+                logger.error(f"[通知工厂] {notifier_name} 文本发送失败: {e}")
+                results[notifier_name] = False
+
+        return results
+
     def get_enabled_notifiers(self) -> List[str]:
         """获取已启用的通知渠道列表"""
         return [

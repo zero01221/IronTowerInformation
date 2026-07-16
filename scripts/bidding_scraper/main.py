@@ -99,28 +99,50 @@ def main():
     
     # 运行所有爬虫
     all_items = manager.run_all()
-    
+
+    # 初始化通知工厂（用于有/无数据时都发送通知）
+    notification_config = config.get_notification_config()
+    notifier_factory = NotifierFactory(notification_config) if notification_config else None
+
     if not all_items:
         logger.info("未找到任何招标信息")
+        # 发送"今天没有新消息"通知
+        if notifier_factory:
+            enabled_notifiers = notifier_factory.get_enabled_notifiers()
+            if enabled_notifiers:
+                logger.info(f"发送空结果通知到: {', '.join(enabled_notifiers)}")
+                results = notifier_factory.send_text_all("今天没有新消息")
+                for notifier_name, success in results.items():
+                    status = "成功" if success else "失败"
+                    logger.info(f"  {notifier_name}: {status}")
         return
-    
+
     # 去重（使用数据库）
     existing_ids = db.get_item_ids()
     new_items = [item for item in all_items if item.item_id not in existing_ids]
-    
+
     if new_items:
         # 保存新项目到数据库
         saved_count = db.save_items(new_items)
         logger.info(f"新增 {saved_count} 条招标信息")
-        
+
         # 发送通知
-        notification_config = config.get_notification_config()
-        if notification_config:
-            notifier_factory = NotifierFactory(notification_config)
+        if notifier_factory:
             enabled_notifiers = notifier_factory.get_enabled_notifiers()
             if enabled_notifiers:
                 logger.info(f"发送通知到: {', '.join(enabled_notifiers)}")
                 results = notifier_factory.send_all(new_items)
+                for notifier_name, success in results.items():
+                    status = "成功" if success else "失败"
+                    logger.info(f"  {notifier_name}: {status}")
+    else:
+        # 抓取到了数据但都是已存在的，也发送"今天没有新消息"
+        logger.info("没有新的招标信息（所有数据已存在）")
+        if notifier_factory:
+            enabled_notifiers = notifier_factory.get_enabled_notifiers()
+            if enabled_notifiers:
+                logger.info(f"发送空结果通知到: {', '.join(enabled_notifiers)}")
+                results = notifier_factory.send_text_all("今天没有新消息")
                 for notifier_name, success in results.items():
                     status = "成功" if success else "失败"
                     logger.info(f"  {notifier_name}: {status}")

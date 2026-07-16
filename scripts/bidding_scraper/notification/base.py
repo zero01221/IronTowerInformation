@@ -27,14 +27,28 @@ class BaseNotifier(ABC):
     def send(self, items: List[BidItem]) -> bool:
         """
         发送通知
-        
+
         Args:
             items: 招标信息列表
-            
+
         Returns:
             是否发送成功
         """
         pass
+
+    def send_text(self, text: str) -> bool:
+        """
+        发送纯文本消息（用于无数据时的通知，如"今天没有新消息"）
+
+        Args:
+            text: 要发送的文本内容
+
+        Returns:
+            是否发送成功
+        """
+        if not self.enabled:
+            return True
+        return False
     
     def format_message(self, items: List[BidItem]) -> str:
         """
