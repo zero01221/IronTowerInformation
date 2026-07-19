@@ -66,7 +66,7 @@ def create_crawler_manager() -> CrawlerManager:
 
 def main():
     """主函数"""
-    #python - m scripts.bidding_scraper.main
+    #python -m scripts.bidding_scraper.main
     parser = argparse.ArgumentParser(description="招标信息爬虫 - 生成 RSS feed")
     parser.add_argument("--output", "-o", help="输出文件路径")
     parser.add_argument("--dry-run", "-n", action="store_true", help="只打印结果，不写文件")
