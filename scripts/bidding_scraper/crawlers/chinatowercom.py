@@ -237,14 +237,7 @@ class ChinaTowerComCrawler(BaseCrawler):
             import re
             title_clean = re.sub(r'<[^>]+>', '', title).strip()
 
-            # URL — 字段可能为空，需要用 infoid 拼接
-            url = record.get("url", "") or record.get("URL", "")
-            if not url:
-                infoid = record.get("infoid", "") or record.get("INFOID", "")
-                if infoid:
-                    url = f"https://ebid.chinatowercom.cn/zgtt/gggs/{self._category}/{infoid}.html"
-
-            # 日期
+            # 日期 — 先解析，URL 拼接需要用到
             pub_date = (record.get("infodate", "") or record.get("INFODATE", "") or
                        record.get("webdate", "") or record.get("publishDate", "") or
                        record.get("createTime", ""))
@@ -259,6 +252,15 @@ class ChinaTowerComCrawler(BaseCrawler):
                         continue
             if not date_obj:
                 date_obj = datetime.now()
+
+            # URL — 字段可能为空，需要用 infoid + 日期拼接
+            # 格式: .../gggs/{category}/{YYYYMMDD}/{infoid}.html
+            url = record.get("url", "") or record.get("URL", "")
+            if not url:
+                infoid = record.get("infoid", "") or record.get("INFOID", "")
+                if infoid:
+                    date_str = date_obj.strftime("%Y%m%d")
+                    url = f"https://ebid.chinatowercom.cn/zgtt/gggs/{self._category}/{date_str}/{infoid}.html"
 
             # 摘要
             description = record.get("content", "") or record.get("CONTENT", "")
