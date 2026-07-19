@@ -7,6 +7,8 @@ import time
 from typing import List, Optional
 
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 from bs4 import BeautifulSoup
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
@@ -58,6 +60,7 @@ def fetch_page(
     encoding: Optional[str] = None,
     proxies: Optional[dict] = None,
     raw: bool = False,
+    session: Optional[requests.Session] = None,
 ):
     """
     获取页面内容，支持自动重试
@@ -73,6 +76,7 @@ def fetch_page(
         encoding: 强制编码
         proxies: 代理配置，None或空字典则禁用代理
         raw: 是否返回原始文本（True返回str，False返回BeautifulSoup）
+        session: 可选的 requests.Session 对象，用于保持Cookie会话
 
     Returns:
         BeautifulSoup对象或原始文本字符串，失败返回None
@@ -89,10 +93,12 @@ def fetch_page(
     req_proxies = proxies if proxies else {'http': None, 'https': None}
 
     try:
+        # 使用 session（如果提供）以保持 Cookie 连续性
+        requester = session if session else requests
         if method.upper() == "POST":
-            resp = requests.post(url, data=data, headers=req_headers, timeout=timeout, proxies=req_proxies)
+            resp = requester.post(url, data=data, headers=req_headers, timeout=timeout, proxies=req_proxies)
         else:
-            resp = requests.get(url, params=params, headers=req_headers, timeout=timeout, proxies=req_proxies)
+            resp = requester.get(url, params=params, headers=req_headers, timeout=timeout, proxies=req_proxies)
 
         resp.raise_for_status()
 
@@ -115,6 +121,63 @@ def fetch_page(
     except Exception as e:
         logger.error(f"请求失败 {url}: {e}")
         raise
+
+
+def create_session(
+    proxy_url: str = "",
+    retries: int = 3,
+    backoff_factor: float = 0.5,
+    status_forcelist: tuple = (500, 502, 503, 504),
+) -> requests.Session:
+    """
+    创建一个带有重试适配器和浏览器级默认头的 requests.Session
+
+    用于需要 Cookie 持久化的爬虫（如需要先访问搜索页获取 CSRF Token）。
+
+    Args:
+        proxy_url: 代理 URL（如 "http://proxy:8080"），空字符串表示不使用代理
+        retries: 重试次数
+        backoff_factor: 退避因子（重试间隔 = backoff_factor * (2^(retry-1)) 秒）
+        status_forcelist: 需要重试的 HTTP 状态码
+
+    Returns:
+        配置好的 requests.Session 实例
+    """
+    session = requests.Session()
+
+    # 配置重试适配器
+    retry_strategy = Retry(
+        total=retries,
+        backoff_factor=backoff_factor,
+        status_forcelist=status_forcelist,
+        allowed_methods=["GET", "POST"],
+    )
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+
+    # 设置浏览器级默认头
+    session.headers.update({
+        "User-Agent": get_random_user_agent(),
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive",
+        "Cache-Control": "no-cache",
+    })
+
+    # 配置代理（优先级低于 fetch_page 的 proxies 参数）
+    if proxy_url:
+        session.proxies = {"http": proxy_url, "https": proxy_url}
+    else:
+        # 从环境变量/配置读取
+        from .config import Config
+        config = Config.get_instance()
+        proxies = config.get_proxies()
+        if proxies:
+            session.proxies = proxies
+
+    return session
 
 
 def random_delay(min_seconds: float = 1, max_seconds: float = 3):

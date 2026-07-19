@@ -1,5 +1,5 @@
 # 招标信息爬虫配置文件
-
+#python -m scripts.bidding_scraper.main --output output/bidding_feed.xml
 # 过滤关键词配置
 keywords:
   # 核心关键词 - 标题或描述必须包含其中至少一个
@@ -182,7 +182,14 @@ sources:
     enabled: true
     name: 中国铁塔电子采购平台
     base_url: https://ebid.chinatowercom.cn
+    detail_page_url: https://ebid.chinatowercom.cn/zgtt/gggs/003001/detailpage.html
     api_url: https://ebid.chinatowercom.cn/inteligentsearch/rest/esinteligentsearch/getFullTextDataNew
+    category: "003001"
+    # 日期过滤：只抓取最近N天（默认7天=近一周）
+    days_limit: 7
+    # 地区过滤：限制云南省（xiaqucode前缀53匹配云南所有市区）
+    region_filter: true
+    region_code: "53"
     keywords:
       - 铁塔
       - 塔桅
@@ -190,6 +197,7 @@ sources:
       - 发射台
       - 发射塔
     max_pages: 3
+    page_size: 30
 
   # =========================================================================
   # 中国铁塔在线商务平台
@@ -235,7 +243,7 @@ sources:
   # 乙方宝（聚合平台，数据丰富）
   # =========================================================================
   yfbzb:
-    enabled: false
+    enabled: true
     name: 乙方宝
     base_url: https://www.yfbzb.com
     search_url: https://www.yfbzb.com/search/invitedBidSearch
@@ -295,7 +303,7 @@ request:
 database:
   path: output/bidding_history.db
   # 保留历史记录的天数
-  retention_days: 90
+  retention_days: 30
 
 # =============================================================================
 # 通知配置

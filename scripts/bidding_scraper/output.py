@@ -43,13 +43,14 @@ class OutputFormatter:
         for date in sorted_dates:
             date_items = items_by_date[date]
             lines.append(f"【{date}】共 {len(date_items)} 条")
-            
+
             for item in date_items:
                 lines.append(f"  {item.title}")
                 # 优先显示原始链接
                 display_url = item.original_url or item.url
                 lines.append(f"    {display_url}")
-            
+                lines.append(f"    [来源: {item.source}]")
+
             lines.append("")
         
         return "\n".join(lines)

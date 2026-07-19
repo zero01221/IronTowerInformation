@@ -24,6 +24,7 @@ from .crawlers import (
     ChinaTowerComCrawler,
     TowerComCnCrawler,
     MiitTxzbqyCrawler,
+    YfbzbCrawler,
 )
 from .output import OutputFormatter
 from .notification import NotifierFactory
@@ -56,17 +57,23 @@ def create_crawler_manager() -> CrawlerManager:
     
     if "miit_txzbqy" in sources:
         manager.register(MiitTxzbqyCrawler(sources["miit_txzbqy"]))
-    
+
+    if "yfbzb" in sources:
+        manager.register(YfbzbCrawler(sources["yfbzb"]))
+
     return manager
 
 
 def main():
     """主函数"""
+    #python - m scripts.bidding_scraper.main
     parser = argparse.ArgumentParser(description="招标信息爬虫 - 生成 RSS feed")
     parser.add_argument("--output", "-o", help="输出文件路径")
     parser.add_argument("--dry-run", "-n", action="store_true", help="只打印结果，不写文件")
     parser.add_argument("--config", "-c", help="配置文件路径")
     parser.add_argument("--stats", action="store_true", help="显示数据库统计信息")
+    parser.add_argument("--list", action="store_true", help="列出数据库中的招标信息（不触发爬虫）")
+    parser.add_argument("--days", "-d", type=int, default=30, help="--list 时显示最近N天的记录（默认30）")
     
     args = parser.parse_args()
     
@@ -87,6 +94,17 @@ def main():
         for source, count in stats['by_source'].items():
             print(f"    {source}: {count}")
         print(f"  数据库路径: {stats['db_path']}")
+        return
+
+    # 列出数据库内容（不触发爬虫）
+    if args.list:
+        days = args.days
+        items = db.get_recent_items(days)
+        formatter = OutputFormatter()
+        if not items:
+            print(f"\n数据库中没有最近 {days} 天的记录")
+        else:
+            formatter.print_summary(items)
         return
     
     # 创建爬虫管理器
