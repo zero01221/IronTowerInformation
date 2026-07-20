@@ -2,8 +2,8 @@ name: 抓取招标信息并部署到 GitHub Pages
 
 on:
   schedule:
-    # 每天 UTC 0:00（北京时间 8:00）
-    - cron: '0 0 * * *'
+    # 每天 UTC 22:00（北京时间 6:00）
+    - cron: '0 22 * * *'
   # 也支持手动触发
   workflow_dispatch:
 

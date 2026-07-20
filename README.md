@@ -71,7 +71,7 @@ python scripts/serve_web.py
 python scripts/serve_web.py --output output/index.html
 ```
 
-在线访问地址：**`https://zero01221.github.io/IronTowerInformation`**（每日 8:00 自动更新）
+在线访问地址：**`https://zero01221.github.io/BiddingInformation`**（每日 8:00 左右自动更新）
 
 支持：
 - 🔍 标题关键字搜索

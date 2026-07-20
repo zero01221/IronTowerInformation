@@ -269,7 +269,7 @@ output:
   rss_file: output/bidding_feed.xml
   rss_title: 铁塔招标信息
   rss_description: 全国铁塔相关招标信息聚合
-  rss_link: https://github.com/zero01221/IronTowerInformation
+  rss_link: https://github.com/zero01221/BiddingInformation
   max_items: 200
 
 # 日志配置
