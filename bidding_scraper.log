@@ -1,93 +1,88 @@
-[2026-07-20 08:10:38] INFO [scripts.bidding_scraper.base_crawler:201] 健康检查: 3/3 个数据源健康
-[2026-07-20 08:10:38] INFO [scripts.bidding_scraper.base_crawler:154] [中国招标投标公共服务平台] 开始抓取
-[2026-07-20 08:10:39] INFO [scripts.bidding_scraper.utils:88] [中国招标投标公共服务平台] 搜索关键词: 铁塔
-[2026-07-20 08:10:40] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
-[2026-07-20 08:10:41] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
-[2026-07-20 08:10:42] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
-[2026-07-20 08:10:44] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
-[2026-07-20 08:10:50] INFO [scripts.bidding_scraper.utils:88] [中国招标投标公共服务平台] 搜索关键词: 塔桅
-[2026-07-20 08:10:50] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
-[2026-07-20 08:10:52] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
-[2026-07-20 08:10:55] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
-[2026-07-20 08:10:57] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
-[2026-07-20 08:11:07] INFO [scripts.bidding_scraper.utils:88] [中国招标投标公共服务平台] 搜索关键词: 广播电视
-[2026-07-20 08:11:07] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
-[2026-07-20 08:11:10] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
-[2026-07-20 08:11:11] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
-[2026-07-20 08:11:14] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
-[2026-07-20 08:11:25] INFO [scripts.bidding_scraper.utils:88] [中国招标投标公共服务平台] 搜索关键词: 发射台
-[2026-07-20 08:11:25] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
-[2026-07-20 08:11:28] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
-[2026-07-20 08:11:31] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
-[2026-07-20 08:11:32] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
-[2026-07-20 08:11:41] INFO [scripts.bidding_scraper.utils:88] [中国招标投标公共服务平台] 搜索关键词: 发射塔
-[2026-07-20 08:11:41] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
-[2026-07-20 08:11:44] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
-[2026-07-20 08:11:46] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
-[2026-07-20 08:11:49] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
-[2026-07-20 08:11:50] INFO [scripts.bidding_scraper.base_crawler:108] [中国招标投标公共服务平台] 日期过滤: 0 -> 0 条（最近7天）
-[2026-07-20 08:11:50] INFO [scripts.bidding_scraper.base_crawler:128] [中国招标投标公共服务平台] 成功获取 0 条招标信息
-[2026-07-20 08:11:50] INFO [scripts.bidding_scraper.base_crawler:184] 等待 20 秒后继续...
-[2026-07-20 08:12:10] INFO [scripts.bidding_scraper.base_crawler:154] [中国铁塔电子采购平台] 开始抓取
-[2026-07-20 08:12:10] INFO [scripts.bidding_scraper.utils:128] [中国铁塔电子采购平台] 搜索关键词: 铁塔
-[2026-07-20 08:12:20] INFO [scripts.bidding_scraper.utils:152]   找到 90 个结果（共 3 页）
-[2026-07-20 08:12:31] INFO [scripts.bidding_scraper.utils:128] [中国铁塔电子采购平台] 搜索关键词: 塔桅
-[2026-07-20 08:12:32] INFO [scripts.bidding_scraper.utils:152]   找到 0 个结果（共 3 页）
-[2026-07-20 08:12:42] INFO [scripts.bidding_scraper.utils:128] [中国铁塔电子采购平台] 搜索关键词: 广播电视
-[2026-07-20 08:12:43] INFO [scripts.bidding_scraper.utils:152]   找到 0 个结果（共 3 页）
-[2026-07-20 08:12:48] INFO [scripts.bidding_scraper.utils:128] [中国铁塔电子采购平台] 搜索关键词: 发射台
-[2026-07-20 08:12:49] INFO [scripts.bidding_scraper.utils:152]   找到 0 个结果（共 3 页）
-[2026-07-20 08:12:54] INFO [scripts.bidding_scraper.utils:128] [中国铁塔电子采购平台] 搜索关键词: 发射塔
-[2026-07-20 08:12:55] INFO [scripts.bidding_scraper.utils:152]   找到 0 个结果（共 3 页）
-[2026-07-20 08:13:00] INFO [scripts.bidding_scraper.base_crawler:128] [中国铁塔电子采购平台] 成功获取 90 条招标信息
-[2026-07-20 08:13:00] INFO [scripts.bidding_scraper.base_crawler:184] 等待 20 秒后继续...
-[2026-07-20 08:13:20] INFO [scripts.bidding_scraper.base_crawler:154] [乙方宝] 开始抓取
-[2026-07-20 08:13:20] INFO [scripts.bidding_scraper.crawlers.yfbzb:56] [乙方宝] 预热会话（访问首页建立Cookie）...
-[2026-07-20 08:13:21] WARNING [scripts.bidding_scraper.crawlers.yfbzb:79] [乙方宝] 预热失败: 502 Server Error: Bad Gateway for url: https://www.yfbzb.com/，将使用无状态请求
-[2026-07-20 08:13:21] INFO [scripts.bidding_scraper.crawlers.yfbzb:93] [乙方宝] 搜索关键词: 铁塔
-[2026-07-20 08:13:21] WARNING [scripts.bidding_scraper.crawlers.yfbzb:155] [乙方宝] HTTP错误 502: https://www.yfbzb.com/search/invitedBidSearch
-[2026-07-20 08:13:27] INFO [scripts.bidding_scraper.crawlers.yfbzb:93] [乙方宝] 搜索关键词: 塔桅
-[2026-07-20 08:13:27] WARNING [scripts.bidding_scraper.crawlers.yfbzb:155] [乙方宝] HTTP错误 502: https://www.yfbzb.com/search/invitedBidSearch
-[2026-07-20 08:13:30] INFO [scripts.bidding_scraper.crawlers.yfbzb:93] [乙方宝] 搜索关键词: 广播电视
-[2026-07-20 08:13:30] WARNING [scripts.bidding_scraper.crawlers.yfbzb:155] [乙方宝] HTTP错误 502: https://www.yfbzb.com/search/invitedBidSearch
-[2026-07-20 08:13:36] INFO [scripts.bidding_scraper.crawlers.yfbzb:93] [乙方宝] 搜索关键词: 发射台
-[2026-07-20 08:14:06] ERROR [scripts.bidding_scraper.crawlers.yfbzb:158] [乙方宝] 获取页面失败: HTTPSConnectionPool(host='www.yfbzb.com', port=443): Read timed out. (read timeout=30)
-[2026-07-20 08:14:10] INFO [scripts.bidding_scraper.crawlers.yfbzb:93] [乙方宝] 搜索关键词: 发射塔
-[2026-07-20 08:14:26] WARNING [scripts.bidding_scraper.crawlers.yfbzb:155] [乙方宝] HTTP错误 502: https://www.yfbzb.com/search/invitedBidSearch
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.base_crawler:108] [乙方宝] 日期过滤: 0 -> 0 条（最近15天）
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.base_crawler:128] [乙方宝] 成功获取 0 条招标信息
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.notification.factory:48] [通知工厂] 已启用 feishu 通知
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司贵州省分公司2026年（安顺市分公司）智能护校平台租赁服务采购项目询比（比选）公
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司湖北省分公司2026年恩施市宜涪高铁隧道手机信号覆盖项目公开询比（比选）公告
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 铁塔能源有限公司黑龙江省分公司2026年能源业务龙园技术支撑服务项目询比（比选）公告
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司铁岭市分公司2026年食堂下水管维修采购项目询比公告
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司铁岭市分公司2026年铁岭市办公楼变压器改造项目询比公告
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司苏州市分公司2026年AZYXJ通信设施迁改项目询比（比选）公告
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司江苏省分公司2026年常州市分公司JLG通信基础设施采购项目标段一（第二次）招标
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司淄博分公司2026年防暑降温物品采购项目公开询比（询价）公告
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 滁州铁塔2026年渔政信息化（二期）运维服务项目比选公告
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 2026年铁塔能源新疆分公司阿勒泰某单位备电设备采购项目（二次）公开询比（比选）公告
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司呼伦贝尔市分公司2026年陈巴尔虎旗某数据专线采购项目（二次）询比公告
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司江苏省分公司2026-2028年产权交易机构选聘项目询比（询价）公告
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔甘肃省分公司天陇铁路公网覆盖项目监理服务采购项目招标公告
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司内蒙古自治区分公司2026年内蒙古生态安全智能监管关键技术研发项目-生态安全智能
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司泰安市分公司2026年业务支撑服务空档期采购项目直接采购事前公示
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司乐山市分公司2026年智慧工厂设备采购项目（第二次）询比（比选）公告
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司阿拉善盟分公司2026年阿拉善左旗某局专用项目数据专线采购项目（三次）询比公告
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司贵州省分公司2026年（毕节市分公司）智慧校园全域感知服务项目（第二次）询比（比
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司江苏省分公司2026年镇江市分公司无人机巡检服务采购项目（第二次）-询比（比选）
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔甘肃省分公司天陇铁路公网覆盖项目设计施工服务采购项目招标公告
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 安徽铁塔智联业务专业信息化市场数据采集服务项目比选公告
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔上海市分公司2026年融媒体中心和职工之家设备采购项目询比公告
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 广东铁塔广州2026年国铁棠溪站等施工服务项目比选公告
-[2026-07-20 08:14:26] INFO [scripts.bidding_scraper.database:90] 保存新项目: 铁塔能源郴州地区2026-2027年低速充电业务施工项目（第二次）招标公告
-[2026-07-20 08:14:26] INFO [__main__:141] 新增 24 条招标信息
-[2026-07-20 08:14:26] INFO [__main__:147] 发送通知到: feishu
-[2026-07-20 08:14:28] INFO [scripts.bidding_scraper.notification.feishu:78] [飞书通知] 发送成功，共 24 条信息
-[2026-07-20 08:14:28] INFO [__main__:151]   feishu: 成功
-[2026-07-20 08:14:28] INFO [scripts.bidding_scraper.output:126] RSS 文件已写入: output/bidding_feed.xml
-[2026-07-20 08:14:28] INFO [__main__:180] 
+[2026-07-20 08:48:17] INFO [scripts.bidding_scraper.base_crawler:201] 健康检查: 3/3 个数据源健康
+[2026-07-20 08:48:17] INFO [scripts.bidding_scraper.base_crawler:154] [中国招标投标公共服务平台] 开始抓取
+[2026-07-20 08:48:18] INFO [scripts.bidding_scraper.utils:88] [中国招标投标公共服务平台] 搜索关键词: 铁塔
+[2026-07-20 08:48:18] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
+[2026-07-20 08:48:19] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
+[2026-07-20 08:48:21] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
+[2026-07-20 08:48:23] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
+[2026-07-20 08:48:32] INFO [scripts.bidding_scraper.utils:88] [中国招标投标公共服务平台] 搜索关键词: 塔桅
+[2026-07-20 08:48:32] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
+[2026-07-20 08:48:35] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
+[2026-07-20 08:48:38] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
+[2026-07-20 08:48:41] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
+[2026-07-20 08:48:49] INFO [scripts.bidding_scraper.utils:88] [中国招标投标公共服务平台] 搜索关键词: 广播电视
+[2026-07-20 08:48:49] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
+[2026-07-20 08:48:51] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
+[2026-07-20 08:48:54] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
+[2026-07-20 08:48:57] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
+[2026-07-20 08:49:11] INFO [scripts.bidding_scraper.utils:88] [中国招标投标公共服务平台] 搜索关键词: 发射台
+[2026-07-20 08:49:11] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
+[2026-07-20 08:49:13] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
+[2026-07-20 08:49:16] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
+[2026-07-20 08:49:17] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
+[2026-07-20 08:49:29] INFO [scripts.bidding_scraper.utils:88] [中国招标投标公共服务平台] 搜索关键词: 发射塔
+[2026-07-20 08:49:30] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
+[2026-07-20 08:49:31] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
+[2026-07-20 08:49:33] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
+[2026-07-20 08:49:35] ERROR [scripts.bidding_scraper.utils:199] [中国招标投标公共服务平台] 请求失败: 405 Client Error: Not Allowed for url: http://www.cebpubservice.com/ctpsp_iiss/searchbusinesstypebeforedooraction/getStringMethod.do
+[2026-07-20 08:49:38] INFO [scripts.bidding_scraper.base_crawler:108] [中国招标投标公共服务平台] 日期过滤: 0 -> 0 条（最近7天）
+[2026-07-20 08:49:38] INFO [scripts.bidding_scraper.base_crawler:128] [中国招标投标公共服务平台] 成功获取 0 条招标信息
+[2026-07-20 08:49:38] INFO [scripts.bidding_scraper.base_crawler:184] 等待 20 秒后继续...
+[2026-07-20 08:49:58] INFO [scripts.bidding_scraper.base_crawler:154] [中国铁塔电子采购平台] 开始抓取
+[2026-07-20 08:49:58] INFO [scripts.bidding_scraper.utils:128] [中国铁塔电子采购平台] 搜索关键词: 铁塔
+[2026-07-20 08:50:06] INFO [scripts.bidding_scraper.utils:152]   找到 90 个结果（共 3 页）
+[2026-07-20 08:50:15] INFO [scripts.bidding_scraper.utils:128] [中国铁塔电子采购平台] 搜索关键词: 塔桅
+[2026-07-20 08:50:16] INFO [scripts.bidding_scraper.utils:152]   找到 0 个结果（共 3 页）
+[2026-07-20 08:50:24] INFO [scripts.bidding_scraper.utils:128] [中国铁塔电子采购平台] 搜索关键词: 广播电视
+[2026-07-20 08:50:25] INFO [scripts.bidding_scraper.utils:152]   找到 0 个结果（共 3 页）
+[2026-07-20 08:50:31] INFO [scripts.bidding_scraper.utils:128] [中国铁塔电子采购平台] 搜索关键词: 发射台
+[2026-07-20 08:50:31] INFO [scripts.bidding_scraper.utils:152]   找到 0 个结果（共 3 页）
+[2026-07-20 08:50:43] INFO [scripts.bidding_scraper.utils:128] [中国铁塔电子采购平台] 搜索关键词: 发射塔
+[2026-07-20 08:50:44] INFO [scripts.bidding_scraper.utils:152]   找到 0 个结果（共 3 页）
+[2026-07-20 08:50:50] INFO [scripts.bidding_scraper.base_crawler:128] [中国铁塔电子采购平台] 成功获取 90 条招标信息
+[2026-07-20 08:50:50] INFO [scripts.bidding_scraper.base_crawler:184] 等待 20 秒后继续...
+[2026-07-20 08:51:10] INFO [scripts.bidding_scraper.base_crawler:154] [乙方宝] 开始抓取
+[2026-07-20 08:51:10] INFO [scripts.bidding_scraper.crawlers.yfbzb:56] [乙方宝] 预热会话（访问首页建立Cookie）...
+[2026-07-20 08:51:12] INFO [scripts.bidding_scraper.crawlers.yfbzb:74] [乙方宝] 首页 HTTP 200, 获取 2 个Cookie
+[2026-07-20 08:51:12] INFO [scripts.bidding_scraper.crawlers.yfbzb:93] [乙方宝] 搜索关键词: 铁塔
+[2026-07-20 08:51:15] INFO [scripts.bidding_scraper.crawlers.yfbzb:93] [乙方宝] 搜索关键词: 塔桅
+[2026-07-20 08:51:22] INFO [scripts.bidding_scraper.crawlers.yfbzb:93] [乙方宝] 搜索关键词: 广播电视
+[2026-07-20 08:51:27] INFO [scripts.bidding_scraper.crawlers.yfbzb:93] [乙方宝] 搜索关键词: 发射台
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.crawlers.yfbzb:93] [乙方宝] 搜索关键词: 发射塔
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.base_crawler:108] [乙方宝] 日期过滤: 0 -> 0 条（最近15天）
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.base_crawler:128] [乙方宝] 成功获取 0 条招标信息
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.notification.factory:48] [通知工厂] 已启用 feishu 通知
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司贵州省分公司2026年（安顺市分公司）智能护校平台租赁服务采购项目询比（比选）公
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司湖北省分公司2026年恩施市宜涪高铁隧道手机信号覆盖项目公开询比（比选）公告
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 铁塔能源有限公司黑龙江省分公司2026年能源业务龙园技术支撑服务项目询比（比选）公告
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司铁岭市分公司2026年食堂下水管维修采购项目询比公告
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司铁岭市分公司2026年铁岭市办公楼变压器改造项目询比公告
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司苏州市分公司2026年AZYXJ通信设施迁改项目询比（比选）公告
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司江苏省分公司2026年常州市分公司JLG通信基础设施采购项目标段一（第二次）招标
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司淄博分公司2026年防暑降温物品采购项目公开询比（询价）公告
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 滁州铁塔2026年渔政信息化（二期）运维服务项目比选公告
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 2026年铁塔能源新疆分公司阿勒泰某单位备电设备采购项目（二次）公开询比（比选）公告
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司呼伦贝尔市分公司2026年陈巴尔虎旗某数据专线采购项目（二次）询比公告
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司江苏省分公司2026-2028年产权交易机构选聘项目询比（询价）公告
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔甘肃省分公司天陇铁路公网覆盖项目监理服务采购项目招标公告
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司内蒙古自治区分公司2026年内蒙古生态安全智能监管关键技术研发项目-生态安全智能
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司泰安市分公司2026年业务支撑服务空档期采购项目直接采购事前公示
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司乐山市分公司2026年智慧工厂设备采购项目（第二次）询比（比选）公告
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司阿拉善盟分公司2026年阿拉善左旗某局专用项目数据专线采购项目（三次）询比公告
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司贵州省分公司2026年（毕节市分公司）智慧校园全域感知服务项目（第二次）询比（比
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔股份有限公司江苏省分公司2026年镇江市分公司无人机巡检服务采购项目（第二次）-询比（比选）
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔甘肃省分公司天陇铁路公网覆盖项目设计施工服务采购项目招标公告
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 安徽铁塔智联业务专业信息化市场数据采集服务项目比选公告
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 中国铁塔上海市分公司2026年融媒体中心和职工之家设备采购项目询比公告
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 广东铁塔广州2026年国铁棠溪站等施工服务项目比选公告
+[2026-07-20 08:51:34] INFO [scripts.bidding_scraper.database:90] 保存新项目: 铁塔能源郴州地区2026-2027年低速充电业务施工项目（第二次）招标公告
+[2026-07-20 08:51:34] INFO [__main__:141] 新增 24 条招标信息
+[2026-07-20 08:51:34] INFO [__main__:147] 发送通知到: feishu
+[2026-07-20 08:51:35] INFO [scripts.bidding_scraper.notification.feishu:78] [飞书通知] 发送成功，共 24 条信息
+[2026-07-20 08:51:35] INFO [__main__:151]   feishu: 成功
+[2026-07-20 08:51:35] INFO [scripts.bidding_scraper.output:126] RSS 文件已写入: output/bidding_feed.xml
+[2026-07-20 08:51:35] INFO [__main__:180] 
 数据源状态:
-[2026-07-20 08:14:28] INFO [__main__:183]   [✓] cebpubservice: 0 条
-[2026-07-20 08:14:28] INFO [__main__:183]   [✓] chinatowercom: 90 条
-[2026-07-20 08:14:28] INFO [__main__:183]   [✓] yfbzb: 0 条
+[2026-07-20 08:51:35] INFO [__main__:183]   [✓] cebpubservice: 0 条
+[2026-07-20 08:51:35] INFO [__main__:183]   [✓] chinatowercom: 90 条
+[2026-07-20 08:51:35] INFO [__main__:183]   [✓] yfbzb: 0 条
