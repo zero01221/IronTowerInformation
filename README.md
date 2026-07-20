@@ -114,9 +114,9 @@ crontab -e
 由于中国招标投标公共服务平台使用git代理时无法访问，所以使用update.bat
 注意事项：
 
-- 虚拟环境 确保 venv 目录存在，且已安装好依赖（requests、beautifulsoup4、lxml 等）
-- Git 配置 确保本地 Git 已配置好 user.name 和 user.email，且能正常 push（建议用 SSH 或配置好凭据）
-- Python 路径 脚本会自动激活虚拟环境，如果你的虚拟环境名称不是 venv，请把脚本里的 venv 改成你的环境名
+- **虚拟环境**： 确保 venv 目录存在，且已安装好依赖（requests、beautifulsoup4、lxml 等）
+- **Git 配置**： 确保本地 Git 已配置好 user.name 和 user.email，且能正常 push（建议用 SSH 或配置好凭据）
+- **Python 路径**： 脚本会自动激活虚拟环境，如果你的虚拟环境名称不是 venv，请把脚本里的 venv 改成你的环境名
 - 如果不想手动运行可以添加到电脑任务计划程序中
 
 ---
