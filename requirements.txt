@@ -1,5 +1,5 @@
 requests
-pytz==2026.1
+pytz
 PyYAML==6.0.3
 tenacity==8.5.0
 beautifulsoup4==4.12.3
