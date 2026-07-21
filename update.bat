@@ -1,5 +1,6 @@
 @echo off
 chcp 65001 >nul
+cd /d "%~dp0%"
 echo ========================================
 echo     BiddingInformation 一键更新脚本
 echo ========================================
